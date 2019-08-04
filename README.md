@@ -34,7 +34,7 @@ This talk mainly focuses on the restricted version of three classic problems in 
 2. Subgraph Isomorphism;
 3. Maximum Isomorphic Subgraphs.
 
-While all these problems are NP-Hard on general graphs, they are all polynomially solvable on trees. The basic technique to solve the last two problems on trees is to use dynamic programming to decompose the problem into several instances of bipartite matching problem.
+Up to now, all these problems have no polynomial solutions on general graphs, but they are all polynomially solvable on trees. The basic technique to solve the last two problems on trees is to use dynamic programming to decompose the problem into several instances of bipartite matching problem.
 
 ## linear-algebra (Chinese)
 
