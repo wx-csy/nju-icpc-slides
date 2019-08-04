@@ -1,0 +1,1603 @@
+% !TeX TS-program = xelatex
+\documentclass[handout]{beamer}
+\usetheme{Copenhagen}
+\usepackage{fontspec, xunicode, xltxtra}
+\usepackage{amsmath, amsfonts, amssymb}
+\usepackage{mathptmx}
+\usepackage{graphicx}
+\usepackage{epstopdf}
+\usepackage{subfigure}
+\usepackage[english]{babel}
+\usepackage{ulem}
+\usepackage{tikz}
+\usepackage{mathdots}
+\usepackage{yhmath}
+\usepackage{cancel}
+\usepackage{color}
+\usepackage{siunitx}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{amssymb}
+\usepackage{gensymb}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usetikzlibrary{fadings}
+\setmonofont{Courier New}
+
+\renewcommand{\algorithmicrequire}{\textbf{Input:}} 
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+
+\title{Trees, Subtrees and Isomorphism: A Revisit}
+\institute{ACM-ICPC Training Team, Nanjing University}
+\author{Chen Shaoyuan}
+\date{June 9, 2019}
+
+%\renewcommand{\vec}{\mathbf}
+\setlength{\parskip}{0.2cm}
+
+\begin{document}
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Definitions}
+  \begin{description}[<+->]
+  	\item[(Unrooted) tree]: a connected acyclic graph.
+  	\item[Rooted tree]: an orientation of a tree, where exactly one vertex, called the root of the tree, has no incoming edge; every other vertex has exactly one incoming edge.
+  	
+  	A rooted tree can also be recursively defined as a finite multiset of rooted trees.
+  	
+  	\item[Graph isomorphism]: two graphs $(V_1, E_1)$ and $(V_2, E_2)$, are called isomorphic, if there exists a bijection $\phi: V_1 \rightarrow V_2$, such that, for every vertex pair $u, v \in V_1$, $uv \in E_1$ iff $\phi(u)\phi(v) \in E_2$.
+  	
+  	\item[Subtree]: a subtree of an unrooted tree $T$ is either $T$ itself, or one of the two components obtained by removing any edge of $T$.
+  	
+  	A subtree rooted at $u$ of a rooted tree $T$, is the rooted tree containing $u$ all descendants of $u$.
+  \end{description}
+\end{frame}
+
+\begin{frame}{Definitions}
+  \begin{description}
+  	\item[Generalized subtree (g-subtree)] A generalized subtree of unrooted tree $T$ is a connected subgraph of $T$. \\
+  	A generalized subtree of rooted tree $T$ is a subgraph of $T$ which is also a rooted tree.
+  \end{description}
+  	\begin{figure}[htb]
+  	\centering
+  	\pause
+\tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+
+\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-.7,xscale=.7]
+%uncomment if require: \path (0,300); %set diagram left start at 0, and has height of 300
+
+%Straight Lines [id:da3000133930910791] 
+\draw    (153.87,183.79) -- (118.79,215) ;
+
+
+%Straight Lines [id:da01867151474982065] 
+\draw    (153.87,183.79) -- (178.87,224.79) ;
+
+
+%Straight Lines [id:da06902895960486166] 
+\draw [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ]   (85,74.46) -- (114.54,116.46) ;
+
+
+%Straight Lines [id:da6938681846412933] 
+\draw [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ]   (114.54,116.46) -- (80.87,153.13) ;
+
+
+%Shape: Circle [id:dp2346266042924634] 
+\draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (72.67,153.13) .. controls (72.67,148.6) and (76.34,144.92) .. (80.87,144.92) .. controls (85.4,144.92) and (89.08,148.6) .. (89.08,153.13) .. controls (89.08,157.66) and (85.4,161.33) .. (80.87,161.33) .. controls (76.34,161.33) and (72.67,157.66) .. (72.67,153.13) -- cycle ;
+%Shape: Circle [id:dp39753245211213306] 
+\draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (76.79,74.46) .. controls (76.79,69.93) and (80.47,66.26) .. (85,66.26) .. controls (89.53,66.26) and (93.21,69.93) .. (93.21,74.46) .. controls (93.21,78.99) and (89.53,82.67) .. (85,82.67) .. controls (80.47,82.67) and (76.79,78.99) .. (76.79,74.46) -- cycle ;
+%Straight Lines [id:da6483911257965635] 
+\draw [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ]   (114.54,116.46) -- (153.87,143.13) ;
+
+
+%Straight Lines [id:da93923785550918] 
+\draw [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ]   (153.87,143.13) -- (153.87,183.79) ;
+
+
+%Straight Lines [id:da14666812867143264] 
+\draw [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ]   (153.87,143.13) -- (188.21,112.79) ;
+
+
+%Straight Lines [id:da35150474869024184] 
+\draw [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ]   (219.67,68.79) -- (192.21,108.79) ;
+
+
+%Straight Lines [id:da3732062745738287] 
+\draw [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ]   (192.21,108.79) -- (219.87,146.13) ;
+
+
+%Shape: Circle [id:dp007970215978392536] 
+\draw  [fill={rgb, 255:red, 208; green, 2; blue, 27 }  ,fill opacity=1 ] (184,108.79) .. controls (184,104.26) and (187.67,100.59) .. (192.21,100.59) .. controls (196.74,100.59) and (200.41,104.26) .. (200.41,108.79) .. controls (200.41,113.33) and (196.74,117) .. (192.21,117) .. controls (187.67,117) and (184,113.33) .. (184,108.79) -- cycle ;
+%Shape: Circle [id:dp49430097781175264] 
+\draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (211.46,68.79) .. controls (211.46,64.26) and (215.13,60.59) .. (219.67,60.59) .. controls (224.2,60.59) and (227.87,64.26) .. (227.87,68.79) .. controls (227.87,73.33) and (224.2,77) .. (219.67,77) .. controls (215.13,77) and (211.46,73.33) .. (211.46,68.79) -- cycle ;
+%Shape: Circle [id:dp17980805902161512] 
+\draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (211.67,146.13) .. controls (211.67,141.6) and (215.34,137.92) .. (219.87,137.92) .. controls (224.4,137.92) and (228.08,141.6) .. (228.08,146.13) .. controls (228.08,150.66) and (224.4,154.33) .. (219.87,154.33) .. controls (215.34,154.33) and (211.67,150.66) .. (211.67,146.13) -- cycle ;
+%Shape: Circle [id:dp5801143367117669] 
+\draw  [fill={rgb, 255:red, 208; green, 2; blue, 27 }  ,fill opacity=1 ] (145.67,143.13) .. controls (145.67,138.6) and (149.34,134.92) .. (153.87,134.92) .. controls (158.4,134.92) and (162.08,138.6) .. (162.08,143.13) .. controls (162.08,147.66) and (158.4,151.33) .. (153.87,151.33) .. controls (149.34,151.33) and (145.67,147.66) .. (145.67,143.13) -- cycle ;
+%Shape: Circle [id:dp7990184641420595] 
+\draw  [fill={rgb, 255:red, 208; green, 2; blue, 27 }  ,fill opacity=1 ] (106.33,116.46) .. controls (106.33,111.93) and (110.01,108.26) .. (114.54,108.26) .. controls (119.07,108.26) and (122.74,111.93) .. (122.74,116.46) .. controls (122.74,120.99) and (119.07,124.67) .. (114.54,124.67) .. controls (110.01,124.67) and (106.33,120.99) .. (106.33,116.46) -- cycle ;
+%Shape: Circle [id:dp28386999369958543] 
+\draw  [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ] (170.67,224.79) .. controls (170.67,220.26) and (174.34,216.59) .. (178.87,216.59) .. controls (183.4,216.59) and (187.08,220.26) .. (187.08,224.79) .. controls (187.08,229.33) and (183.4,233) .. (178.87,233) .. controls (174.34,233) and (170.67,229.33) .. (170.67,224.79) -- cycle ;
+%Shape: Circle [id:dp3261339730330155] 
+\draw  [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ] (110.59,215) .. controls (110.59,210.47) and (114.26,206.79) .. (118.79,206.79) .. controls (123.33,206.79) and (127,210.47) .. (127,215) .. controls (127,219.53) and (123.33,223.21) .. (118.79,223.21) .. controls (114.26,223.21) and (110.59,219.53) .. (110.59,215) -- cycle ;
+%Shape: Circle [id:dp1051531292022021] 
+\draw  [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ] (145.67,183.79) .. controls (145.67,179.26) and (149.34,175.59) .. (153.87,175.59) .. controls (158.4,175.59) and (162.08,179.26) .. (162.08,183.79) .. controls (162.08,188.33) and (158.4,192) .. (153.87,192) .. controls (149.34,192) and (145.67,188.33) .. (145.67,183.79) -- cycle ;
+%Shape: Circle [id:dp7780330519839298] 
+\draw  [fill={rgb, 255:red, 208; green, 2; blue, 27 }  ,fill opacity=1 ] (367.67,143.13) .. controls (367.67,138.6) and (371.34,134.92) .. (375.87,134.92) .. controls (380.4,134.92) and (384.08,138.6) .. (384.08,143.13) .. controls (384.08,147.66) and (380.4,151.33) .. (375.87,151.33) .. controls (371.34,151.33) and (367.67,147.66) .. (367.67,143.13) -- cycle ;
+%Shape: Circle [id:dp5850668853702807] 
+\draw  [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ] (289.67,186.13) .. controls (289.67,181.6) and (293.34,177.92) .. (297.87,177.92) .. controls (302.4,177.92) and (306.08,181.6) .. (306.08,186.13) .. controls (306.08,190.66) and (302.4,194.33) .. (297.87,194.33) .. controls (293.34,194.33) and (289.67,190.66) .. (289.67,186.13) -- cycle ;
+%Shape: Circle [id:dp30060920994158424] 
+\draw  [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ] (333.67,188.13) .. controls (333.67,183.6) and (337.34,179.92) .. (341.87,179.92) .. controls (346.4,179.92) and (350.08,183.6) .. (350.08,188.13) .. controls (350.08,192.66) and (346.4,196.33) .. (341.87,196.33) .. controls (337.34,196.33) and (333.67,192.66) .. (333.67,188.13) -- cycle ;
+%Shape: Circle [id:dp5179649117627299] 
+\draw  [fill={rgb, 255:red, 208; green, 2; blue, 27 }  ,fill opacity=1 ] (394.67,186.13) .. controls (394.67,181.6) and (398.34,177.92) .. (402.87,177.92) .. controls (407.4,177.92) and (411.08,181.6) .. (411.08,186.13) .. controls (411.08,190.66) and (407.4,194.33) .. (402.87,194.33) .. controls (398.34,194.33) and (394.67,190.66) .. (394.67,186.13) -- cycle ;
+%Shape: Circle [id:dp020275149474411558] 
+\draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (471.67,185.13) .. controls (471.67,180.6) and (475.34,176.92) .. (479.87,176.92) .. controls (484.4,176.92) and (488.08,180.6) .. (488.08,185.13) .. controls (488.08,189.66) and (484.4,193.33) .. (479.87,193.33) .. controls (475.34,193.33) and (471.67,189.66) .. (471.67,185.13) -- cycle ;
+%Straight Lines [id:da8854664873256306] 
+\draw    (370.87,94.13) -- (332.26,134.48) ;
+\draw [shift={(330.87,135.92)}, rotate = 313.74] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (10.72,-5.15) -- (0,0) -- (10.72,5.15) -- (7.12,0) -- cycle    ;
+
+%Straight Lines [id:da19724427712333847] 
+\draw    (370.87,94.13) -- (375.63,132.94) ;
+\draw [shift={(375.87,134.92)}, rotate = 263.01] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (10.72,-5.15) -- (0,0) -- (10.72,5.15) -- (7.12,0) -- cycle    ;
+
+%Straight Lines [id:da16342349152466795] 
+\draw    (370.87,94.13) -- (423.25,131.76) ;
+\draw [shift={(424.87,132.92)}, rotate = 215.69] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (10.72,-5.15) -- (0,0) -- (10.72,5.15) -- (7.12,0) -- cycle    ;
+
+%Straight Lines [id:da4531389927238858] 
+\draw    (330.87,144.13) -- (299.27,176.49) ;
+\draw [shift={(297.87,177.92)}, rotate = 314.32] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (10.72,-5.15) -- (0,0) -- (10.72,5.15) -- (7.12,0) -- cycle    ;
+
+%Straight Lines [id:da051579989199357135] 
+\draw    (330.87,144.13) -- (341.28,178.01) ;
+\draw [shift={(341.87,179.92)}, rotate = 252.92000000000002] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (10.72,-5.15) -- (0,0) -- (10.72,5.15) -- (7.12,0) -- cycle    ;
+
+%Straight Lines [id:da42991778689657245] 
+\draw    (424.87,141.13) -- (403.9,176.21) ;
+\draw [shift={(402.87,177.92)}, rotate = 300.88] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (10.72,-5.15) -- (0,0) -- (10.72,5.15) -- (7.12,0) -- cycle    ;
+
+%Shape: Circle [id:dp30810886403512194] 
+\draw  [fill={rgb, 255:red, 208; green, 2; blue, 27 }  ,fill opacity=1 ] (434.67,187.13) .. controls (434.67,182.6) and (438.34,178.92) .. (442.87,178.92) .. controls (447.4,178.92) and (451.08,182.6) .. (451.08,187.13) .. controls (451.08,191.66) and (447.4,195.33) .. (442.87,195.33) .. controls (438.34,195.33) and (434.67,191.66) .. (434.67,187.13) -- cycle ;
+%Straight Lines [id:da1877345388983538] 
+\draw    (424.87,141.13) -- (442.01,177.12) ;
+\draw [shift={(442.87,178.92)}, rotate = 244.53] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (10.72,-5.15) -- (0,0) -- (10.72,5.15) -- (7.12,0) -- cycle    ;
+
+%Straight Lines [id:da8651621645716934] 
+\draw    (424.87,141.13) -- (478.2,175.83) ;
+\draw [shift={(479.87,176.92)}, rotate = 213.06] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]  [draw opacity=0] (10.72,-5.15) -- (0,0) -- (10.72,5.15) -- (7.12,0) -- cycle    ;
+
+%Shape: Circle [id:dp7668888169282948] 
+\draw  [fill={rgb, 255:red, 208; green, 2; blue, 27 }  ,fill opacity=1 ] (362.67,94.13) .. controls (362.67,89.6) and (366.34,85.92) .. (370.87,85.92) .. controls (375.4,85.92) and (379.08,89.6) .. (379.08,94.13) .. controls (379.08,98.66) and (375.4,102.33) .. (370.87,102.33) .. controls (366.34,102.33) and (362.67,98.66) .. (362.67,94.13) -- cycle ;
+%Shape: Circle [id:dp0858835505359512] 
+\draw  [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ] (322.67,144.13) .. controls (322.67,139.6) and (326.34,135.92) .. (330.87,135.92) .. controls (335.4,135.92) and (339.08,139.6) .. (339.08,144.13) .. controls (339.08,148.66) and (335.4,152.33) .. (330.87,152.33) .. controls (326.34,152.33) and (322.67,148.66) .. (322.67,144.13) -- cycle ;
+%Shape: Circle [id:dp4866230199458377] 
+\draw  [fill={rgb, 255:red, 208; green, 2; blue, 27 }  ,fill opacity=1 ] (416.67,141.13) .. controls (416.67,136.6) and (420.34,132.92) .. (424.87,132.92) .. controls (429.4,132.92) and (433.08,136.6) .. (433.08,141.13) .. controls (433.08,145.66) and (429.4,149.33) .. (424.87,149.33) .. controls (420.34,149.33) and (416.67,145.66) .. (416.67,141.13) -- cycle ;
+
+\end{tikzpicture}
+	\caption{The yellow part is a subtree of the whole graph; the red part is a g-subtree of the whole tree.}
+  	\end{figure}
+
+\end{frame}
+
+\begin{frame}{Rooted Tree Isomorphism}
+	Given two rooted trees $T_1$ and $T_2$, decide if they are isomorphic.
+	
+	\pause
+	\begin{solution}[unique representation via sorting]
+		For every node, we may sort its child subtrees in some order. The resulting ordered trees are unique for two isomorphic trees.
+	\end{solution}
+    \pause
+    
+    \begin{figure}
+    	\centering
+    \tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+    
+    \begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-.6,xscale=.6]
+    %uncomment if require: \path (0,167.45672607421875); %set diagram left start at 0, and has height of 167.45672607421875
+    
+    %Straight Lines [id:da18451555196418834] 
+    \draw    (140,40) -- (100,80) ;
+    
+    
+    %Straight Lines [id:da9172437085543055] 
+    \draw    (100,80) -- (70,120) ;
+    
+    
+    %Straight Lines [id:da6627922783537561] 
+    \draw    (100,80) -- (130,120) ;
+    
+    
+    %Straight Lines [id:da19835115069097453] 
+    \draw    (140,40) -- (180,80) ;
+    
+    
+    %Shape: Circle [id:dp5969477381083317] 
+    \draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (130,40) .. controls (130,34.48) and (134.48,30) .. (140,30) .. controls (145.52,30) and (150,34.48) .. (150,40) .. controls (150,45.52) and (145.52,50) .. (140,50) .. controls (134.48,50) and (130,45.52) .. (130,40) -- cycle ;
+    %Shape: Circle [id:dp33640791603105447] 
+    \draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (170,80) .. controls (170,74.48) and (174.48,70) .. (180,70) .. controls (185.52,70) and (190,74.48) .. (190,80) .. controls (190,85.52) and (185.52,90) .. (180,90) .. controls (174.48,90) and (170,85.52) .. (170,80) -- cycle ;
+    %Shape: Circle [id:dp1203224984681337] 
+    \draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (120,120) .. controls (120,114.48) and (124.48,110) .. (130,110) .. controls (135.52,110) and (140,114.48) .. (140,120) .. controls (140,125.52) and (135.52,130) .. (130,130) .. controls (124.48,130) and (120,125.52) .. (120,120) -- cycle ;
+    %Shape: Circle [id:dp534529429287588] 
+    \draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (60,120) .. controls (60,114.48) and (64.48,110) .. (70,110) .. controls (75.52,110) and (80,114.48) .. (80,120) .. controls (80,125.52) and (75.52,130) .. (70,130) .. controls (64.48,130) and (60,125.52) .. (60,120) -- cycle ;
+    %Shape: Circle [id:dp33983545766284196] 
+    \draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (90,80) .. controls (90,74.48) and (94.48,70) .. (100,70) .. controls (105.52,70) and (110,74.48) .. (110,80) .. controls (110,85.52) and (105.52,90) .. (100,90) .. controls (94.48,90) and (90,85.52) .. (90,80) -- cycle ;
+    %Straight Lines [id:da8175099082889168] 
+    \draw    (550,40) -- (510,80) ;
+    
+    
+    %Straight Lines [id:da3775565133176171] 
+    \draw    (510,80) -- (480,120) ;
+    
+    
+    %Straight Lines [id:da8830641814287441] 
+    \draw    (510,80) -- (540,120) ;
+    
+    
+    %Straight Lines [id:da07990450726933229] 
+    \draw    (550,40) -- (590,80) ;
+    
+    
+    %Shape: Circle [id:dp009292120122022407] 
+    \draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (540,40) .. controls (540,34.48) and (544.48,30) .. (550,30) .. controls (555.52,30) and (560,34.48) .. (560,40) .. controls (560,45.52) and (555.52,50) .. (550,50) .. controls (544.48,50) and (540,45.52) .. (540,40) -- cycle ;
+    %Shape: Circle [id:dp13826420411564033] 
+    \draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (580,80) .. controls (580,74.48) and (584.48,70) .. (590,70) .. controls (595.52,70) and (600,74.48) .. (600,80) .. controls (600,85.52) and (595.52,90) .. (590,90) .. controls (584.48,90) and (580,85.52) .. (580,80) -- cycle ;
+    %Shape: Circle [id:dp3325120751290873] 
+    \draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (530,120) .. controls (530,114.48) and (534.48,110) .. (540,110) .. controls (545.52,110) and (550,114.48) .. (550,120) .. controls (550,125.52) and (545.52,130) .. (540,130) .. controls (534.48,130) and (530,125.52) .. (530,120) -- cycle ;
+    %Shape: Circle [id:dp9458110948805585] 
+    \draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (470,120) .. controls (470,114.48) and (474.48,110) .. (480,110) .. controls (485.52,110) and (490,114.48) .. (490,120) .. controls (490,125.52) and (485.52,130) .. (480,130) .. controls (474.48,130) and (470,125.52) .. (470,120) -- cycle ;
+    %Shape: Circle [id:dp5076375188290572] 
+    \draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (500,80) .. controls (500,74.48) and (504.48,70) .. (510,70) .. controls (515.52,70) and (520,74.48) .. (520,80) .. controls (520,85.52) and (515.52,90) .. (510,90) .. controls (504.48,90) and (500,85.52) .. (500,80) -- cycle ;
+    %Straight Lines [id:da6268836960709092] 
+    \draw    (320,40) -- (280,80) ;
+    
+    
+    %Straight Lines [id:da88858985282558] 
+    \draw    (360,80) -- (330,120) ;
+    
+    
+    %Straight Lines [id:da12404112366657061] 
+    \draw    (360,80) -- (390,120) ;
+    
+    
+    %Straight Lines [id:da5881227749432569] 
+    \draw    (320,40) -- (360,80) ;
+    
+    
+    %Shape: Circle [id:dp44840037613908446] 
+    \draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (310,40) .. controls (310,34.48) and (314.48,30) .. (320,30) .. controls (325.52,30) and (330,34.48) .. (330,40) .. controls (330,45.52) and (325.52,50) .. (320,50) .. controls (314.48,50) and (310,45.52) .. (310,40) -- cycle ;
+    %Shape: Circle [id:dp4808185842483974] 
+    \draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (350,80) .. controls (350,74.48) and (354.48,70) .. (360,70) .. controls (365.52,70) and (370,74.48) .. (370,80) .. controls (370,85.52) and (365.52,90) .. (360,90) .. controls (354.48,90) and (350,85.52) .. (350,80) -- cycle ;
+    %Shape: Circle [id:dp48995333383414286] 
+    \draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (380,120) .. controls (380,114.48) and (384.48,110) .. (390,110) .. controls (395.52,110) and (400,114.48) .. (400,120) .. controls (400,125.52) and (395.52,130) .. (390,130) .. controls (384.48,130) and (380,125.52) .. (380,120) -- cycle ;
+    %Shape: Circle [id:dp9370022908044229] 
+    \draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (320,120) .. controls (320,114.48) and (324.48,110) .. (330,110) .. controls (335.52,110) and (340,114.48) .. (340,120) .. controls (340,125.52) and (335.52,130) .. (330,130) .. controls (324.48,130) and (320,125.52) .. (320,120) -- cycle ;
+    %Shape: Circle [id:dp2838667454666528] 
+    \draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (270,80) .. controls (270,74.48) and (274.48,70) .. (280,70) .. controls (285.52,70) and (290,74.48) .. (290,80) .. controls (290,85.52) and (285.52,90) .. (280,90) .. controls (274.48,90) and (270,85.52) .. (270,80) -- cycle ;
+    %Right Arrow [id:dp4552700155535434] 
+    \draw   (410,67.5) -- (440,67.5) -- (440,60) -- (460,75) -- (440,90) -- (440,82.5) -- (410,82.5) -- cycle ;
+    
+    \end{tikzpicture}
+    \caption{Canonicalization of trees via sorting.}
+    \end{figure}
+    \pause
+    We can also use tree hashing to avoid sorting.
+\end{frame}
+
+\begin{frame}{Unrooted Tree Isomorphism}
+  But how can we decide the isomorphism of two unrooted trees?
+  
+  \pause
+  \begin{theorem}
+  	We can solve the unrooted tree isomorphism problem based on rooted tree isomorphism algorithm in the same asymptotic time.
+  \end{theorem}
+  
+  Basic idea: root the trees at their centroids. A tree has either one or two centroids. In case that a tree has two centroids, try both possibilities.
+  
+  \pause
+  \begin{description}
+  	\item[centroid] The centroid of a graph $G$ is defined as 
+  	$$ \arg\min_{u \in V(G)} \max_{v \in V(G)} d(u, v) $$
+  \end{description}
+  
+  \pause
+  The centroids of a tree can be found in linear time by dynamic programming or running BFS twice.
+\end{frame}
+
+\begin{frame}{Subtree Isomorphism, Rooted}
+Given rooted trees $S$ and $T$, decide if there exists a \textbf{g-subtree} of $T$ isomorphic to $S$.
+
+\begin{figure}
+	\centering
+	
+	
+	\tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+	
+	\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-.6,xscale=.6]
+	%uncomment if require: \path (0,197.77883911132812); %set diagram left start at 0, and has height of 197.77883911132812
+	
+	%Straight Lines [id:da2267223111852339] 
+	\draw    (250,130) -- (250,180) ;
+	
+	
+	%Straight Lines [id:da7212089624045053] 
+	\draw    (100,80) -- (70,120) ;
+	
+	
+	%Straight Lines [id:da5317009029121493] 
+	\draw    (100,80) -- (130,120) ;
+	
+	
+	%Shape: Circle [id:dp5892020046763047] 
+	\draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (120,120) .. controls (120,114.48) and (124.48,110) .. (130,110) .. controls (135.52,110) and (140,114.48) .. (140,120) .. controls (140,125.52) and (135.52,130) .. (130,130) .. controls (124.48,130) and (120,125.52) .. (120,120) -- cycle ;
+	%Shape: Circle [id:dp8278542520241916] 
+	\draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (60,120) .. controls (60,114.48) and (64.48,110) .. (70,110) .. controls (75.52,110) and (80,114.48) .. (80,120) .. controls (80,125.52) and (75.52,130) .. (70,130) .. controls (64.48,130) and (60,125.52) .. (60,120) -- cycle ;
+	%Shape: Circle [id:dp5019792046990115] 
+	\draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (90,80) .. controls (90,74.48) and (94.48,70) .. (100,70) .. controls (105.52,70) and (110,74.48) .. (110,80) .. controls (110,85.52) and (105.52,90) .. (100,90) .. controls (94.48,90) and (90,85.52) .. (90,80) -- cycle ;
+	%Straight Lines [id:da3328722744932089] 
+	\draw    (240,50) -- (200,90) ;
+	
+	
+	%Straight Lines [id:da5774433940634207] 
+	\draw [fill={rgb, 255:red, 208; green, 2; blue, 27 }  ,fill opacity=1 ]   (280,90) -- (250,130) ;
+	
+	
+	%Straight Lines [id:da5684490610761477] 
+	\draw [fill={rgb, 255:red, 208; green, 2; blue, 27 }  ,fill opacity=1 ]   (280,90) -- (310,130) ;
+	
+	
+	%Straight Lines [id:da4021701089262413] 
+	\draw [fill={rgb, 255:red, 208; green, 2; blue, 27 }  ,fill opacity=1 ]   (240,50) -- (280,90) ;
+	
+	
+	%Shape: Circle [id:dp38156540266800865] 
+	\draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (230,50) .. controls (230,44.48) and (234.48,40) .. (240,40) .. controls (245.52,40) and (250,44.48) .. (250,50) .. controls (250,55.52) and (245.52,60) .. (240,60) .. controls (234.48,60) and (230,55.52) .. (230,50) -- cycle ;
+	%Shape: Circle [id:dp7711591432752685] 
+	\draw  [fill={rgb, 255:red, 208; green, 2; blue, 27 }  ,fill opacity=1 ] (270,90) .. controls (270,84.48) and (274.48,80) .. (280,80) .. controls (285.52,80) and (290,84.48) .. (290,90) .. controls (290,95.52) and (285.52,100) .. (280,100) .. controls (274.48,100) and (270,95.52) .. (270,90) -- cycle ;
+	%Shape: Circle [id:dp8972838229690046] 
+	\draw  [fill={rgb, 255:red, 208; green, 2; blue, 27 }  ,fill opacity=1 ] (300,130) .. controls (300,124.48) and (304.48,120) .. (310,120) .. controls (315.52,120) and (320,124.48) .. (320,130) .. controls (320,135.52) and (315.52,140) .. (310,140) .. controls (304.48,140) and (300,135.52) .. (300,130) -- cycle ;
+	%Shape: Circle [id:dp024881857680974617] 
+	\draw  [fill={rgb, 255:red, 208; green, 2; blue, 27 }  ,fill opacity=1 ] (240,130) .. controls (240,124.48) and (244.48,120) .. (250,120) .. controls (255.52,120) and (260,124.48) .. (260,130) .. controls (260,135.52) and (255.52,140) .. (250,140) .. controls (244.48,140) and (240,135.52) .. (240,130) -- cycle ;
+	%Shape: Circle [id:dp17772731864025548] 
+	\draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (190,90) .. controls (190,84.48) and (194.48,80) .. (200,80) .. controls (205.52,80) and (210,84.48) .. (210,90) .. controls (210,95.52) and (205.52,100) .. (200,100) .. controls (194.48,100) and (190,95.52) .. (190,90) -- cycle ;
+	%Shape: Circle [id:dp28457578525708604] 
+	\draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (240,180) .. controls (240,174.48) and (244.48,170) .. (250,170) .. controls (255.52,170) and (260,174.48) .. (260,180) .. controls (260,185.52) and (255.52,190) .. (250,190) .. controls (244.48,190) and (240,185.52) .. (240,180) -- cycle ;
+	
+	\end{tikzpicture}
+	
+\end{figure}
+
+There might be exponentially many g-subtrees in a given tree!
+\end{frame}
+
+\begin{frame}{Subtree Isomorphism, Rooted}
+\begin{solution}[dynamic programming]
+	We may use dynamic programming to solve this problem. Let for $u \in S, v \in T$, define $M[u, v] = 1$ if $S_u$ is isomorphic to some g-subtree of $T$ rooted at $v$; otherwise $M[u, v] = 0$. $M[u, v]$ can be computed from $M[x, y]$ where $x \in C(u), y \in C(v)$.
+\end{solution}
+
+We may define a bipartite graph $C(u) \cup C(v)$ where $x \in C(u)$ and $y \in C(v)$ are connected by an edge if $M[x, y] = 1$. Note that $M[u, v] = 1$ if and only if the bipartite graph has a $C(u)$-perfect matching.
+\end{frame}
+
+\begin{frame}{Subtree Isomorphism, Rooted}
+\begin{algorithm}[H] 
+	\caption{Rooted Subtree Isomorphism} 
+	\begin{algorithmic}[1] 
+		\Require two rooted trees $S$ and $T$
+		\Ensure decide if $S$ is isomorphic to some g-subtree of $T$
+		\State initialize $M[\cdot, \cdot]$ with 0
+		\For {vertex $v$ in post-order traversal of $T$}
+		\For {each vertex $u$ is $S$}
+		\State build bipartite graph $G = (C(u) \cup C(v), M[C(u), C(v)])$
+		\State set $M[u, v] = 1$ is $G$ has a $C(u)$-perfect matching
+		\EndFor
+		\EndFor
+		\State \Return true if $M[root(S), v] = 1$ for some $v \in T$
+	\end{algorithmic} 
+\end{algorithm}
+\end{frame}
+
+\begin{frame}{Subtree Isomorphism, Rooted}
+\begin{figure}
+	
+	\centering
+	\tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+	
+	\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-.75,xscale=.75]
+	%uncomment if require: \path (0,428.0072021484375); %set diagram left start at 0, and has height of 428.0072021484375
+	
+	%Straight Lines [id:da6095899382406031] 
+	\draw [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ]   (96,234) -- (76,264) ;
+	
+	
+	%Straight Lines [id:da5179827551037464] 
+	\draw [fill={rgb, 255:red, 208; green, 2; blue, 27 }  ,fill opacity=1 ]   (96,234) -- (116,264) ;
+	
+	
+	%Straight Lines [id:da4071366364143765] 
+	\draw [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ]   (76,264) -- (66,294) ;
+	
+	
+	%Straight Lines [id:da826986310341074] 
+	\draw [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ]   (76,264) -- (86,294) ;
+	
+	
+	%Straight Lines [id:da08982873490721532] 
+	\draw [fill={rgb, 255:red, 208; green, 2; blue, 27 }  ,fill opacity=1 ]   (116,264) -- (126,294) ;
+	
+	
+	%Straight Lines [id:da8946270487957577] 
+	\draw [fill={rgb, 255:red, 208; green, 2; blue, 27 }  ,fill opacity=1 ]   (126,294) -- (126,324) ;
+	
+	
+	%Shape: Circle [id:dp7119302683875677] 
+	\draw  [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ] (71,264) .. controls (71,261.24) and (73.24,259) .. (76,259) .. controls (78.76,259) and (81,261.24) .. (81,264) .. controls (81,266.76) and (78.76,269) .. (76,269) .. controls (73.24,269) and (71,266.76) .. (71,264) -- cycle ;
+	%Shape: Circle [id:dp993954564677938] 
+	\draw  [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ] (61,294) .. controls (61,291.24) and (63.24,289) .. (66,289) .. controls (68.76,289) and (71,291.24) .. (71,294) .. controls (71,296.76) and (68.76,299) .. (66,299) .. controls (63.24,299) and (61,296.76) .. (61,294) -- cycle ;
+	%Shape: Circle [id:dp3544631333715722] 
+	\draw  [fill={rgb, 255:red, 208; green, 2; blue, 27 }  ,fill opacity=1 ] (111,264) .. controls (111,261.24) and (113.24,259) .. (116,259) .. controls (118.76,259) and (121,261.24) .. (121,264) .. controls (121,266.76) and (118.76,269) .. (116,269) .. controls (113.24,269) and (111,266.76) .. (111,264) -- cycle ;
+	%Shape: Circle [id:dp05303064159229631] 
+	\draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (91,234) .. controls (91,231.24) and (93.24,229) .. (96,229) .. controls (98.76,229) and (101,231.24) .. (101,234) .. controls (101,236.76) and (98.76,239) .. (96,239) .. controls (93.24,239) and (91,236.76) .. (91,234) -- cycle ;
+	%Shape: Circle [id:dp948255819763338] 
+	\draw  [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ] (81,294) .. controls (81,291.24) and (83.24,289) .. (86,289) .. controls (88.76,289) and (91,291.24) .. (91,294) .. controls (91,296.76) and (88.76,299) .. (86,299) .. controls (83.24,299) and (81,296.76) .. (81,294) -- cycle ;
+	%Shape: Circle [id:dp9812524001758547] 
+	\draw  [fill={rgb, 255:red, 208; green, 2; blue, 27 }  ,fill opacity=1 ] (121,294) .. controls (121,291.24) and (123.24,289) .. (126,289) .. controls (128.76,289) and (131,291.24) .. (131,294) .. controls (131,296.76) and (128.76,299) .. (126,299) .. controls (123.24,299) and (121,296.76) .. (121,294) -- cycle ;
+	%Shape: Circle [id:dp2804343823990727] 
+	\draw  [fill={rgb, 255:red, 208; green, 2; blue, 27 }  ,fill opacity=1 ] (121,324) .. controls (121,321.24) and (123.24,319) .. (126,319) .. controls (128.76,319) and (131,321.24) .. (131,324) .. controls (131,326.76) and (128.76,329) .. (126,329) .. controls (123.24,329) and (121,326.76) .. (121,324) -- cycle ;
+	%Straight Lines [id:da5290382286768562] 
+	\draw [fill={rgb, 255:red, 245; green, 166; blue, 35 }  ,fill opacity=1 ]   (302,27) -- (262,57) ;
+	
+	
+	%Straight Lines [id:da9256303816422997] 
+	\draw [fill={rgb, 255:red, 245; green, 166; blue, 35 }  ,fill opacity=1 ]   (262,57) -- (252,87) ;
+	
+	
+	%Straight Lines [id:da03465029350458537] 
+	\draw [fill={rgb, 255:red, 245; green, 166; blue, 35 }  ,fill opacity=1 ]   (272,87) -- (262,57) ;
+	
+	
+	%Straight Lines [id:da12463246434323771] 
+	\draw [fill={rgb, 255:red, 245; green, 166; blue, 35 }  ,fill opacity=1 ]   (252,117) -- (252,87) ;
+	
+	
+	%Straight Lines [id:da8367175080232103] 
+	\draw [fill={rgb, 255:red, 126; green, 211; blue, 33 }  ,fill opacity=1 ]   (302,27) -- (312,57) ;
+	
+	
+	%Straight Lines [id:da2168058279355476] 
+	\draw [fill={rgb, 255:red, 126; green, 211; blue, 33 }  ,fill opacity=1 ]   (312,57) -- (322,87) ;
+	
+	
+	%Straight Lines [id:da6079131587151632] 
+	\draw [fill={rgb, 255:red, 126; green, 211; blue, 33 }  ,fill opacity=1 ]   (312,57) -- (302,87) ;
+	
+	
+	%Straight Lines [id:da23438943917403132] 
+	\draw [fill={rgb, 255:red, 80; green, 227; blue, 194 }  ,fill opacity=1 ]   (302,27) -- (352,57) ;
+	
+	
+	%Straight Lines [id:da0647507461005119] 
+	\draw [fill={rgb, 255:red, 80; green, 227; blue, 194 }  ,fill opacity=1 ]   (352,57) -- (352,87) ;
+	
+	
+	%Straight Lines [id:da6809335151986289] 
+	\draw [fill={rgb, 255:red, 80; green, 227; blue, 194 }  ,fill opacity=1 ]   (352,87) -- (352,117) ;
+	
+	
+	%Shape: Circle [id:dp4684056699865877] 
+	\draw  [fill={rgb, 255:red, 245; green, 166; blue, 35 }  ,fill opacity=1 ] (257,57) .. controls (257,54.24) and (259.24,52) .. (262,52) .. controls (264.76,52) and (267,54.24) .. (267,57) .. controls (267,59.76) and (264.76,62) .. (262,62) .. controls (259.24,62) and (257,59.76) .. (257,57) -- cycle ;
+	%Shape: Circle [id:dp9075134322822216] 
+	\draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (297,27) .. controls (297,24.24) and (299.24,22) .. (302,22) .. controls (304.76,22) and (307,24.24) .. (307,27) .. controls (307,29.76) and (304.76,32) .. (302,32) .. controls (299.24,32) and (297,29.76) .. (297,27) -- cycle ;
+	%Shape: Circle [id:dp65919194806465] 
+	\draw  [fill={rgb, 255:red, 126; green, 211; blue, 33 }  ,fill opacity=1 ] (307,57) .. controls (307,54.24) and (309.24,52) .. (312,52) .. controls (314.76,52) and (317,54.24) .. (317,57) .. controls (317,59.76) and (314.76,62) .. (312,62) .. controls (309.24,62) and (307,59.76) .. (307,57) -- cycle ;
+	%Shape: Circle [id:dp9709924035056074] 
+	\draw  [fill={rgb, 255:red, 126; green, 211; blue, 33 }  ,fill opacity=1 ] (297,87) .. controls (297,84.24) and (299.24,82) .. (302,82) .. controls (304.76,82) and (307,84.24) .. (307,87) .. controls (307,89.76) and (304.76,92) .. (302,92) .. controls (299.24,92) and (297,89.76) .. (297,87) -- cycle ;
+	%Shape: Circle [id:dp5079258796833817] 
+	\draw  [fill={rgb, 255:red, 245; green, 166; blue, 35 }  ,fill opacity=1 ] (247,87) .. controls (247,84.24) and (249.24,82) .. (252,82) .. controls (254.76,82) and (257,84.24) .. (257,87) .. controls (257,89.76) and (254.76,92) .. (252,92) .. controls (249.24,92) and (247,89.76) .. (247,87) -- cycle ;
+	%Shape: Circle [id:dp26905604046978593] 
+	\draw  [fill={rgb, 255:red, 245; green, 166; blue, 35 }  ,fill opacity=1 ] (267,87) .. controls (267,84.24) and (269.24,82) .. (272,82) .. controls (274.76,82) and (277,84.24) .. (277,87) .. controls (277,89.76) and (274.76,92) .. (272,92) .. controls (269.24,92) and (267,89.76) .. (267,87) -- cycle ;
+	%Shape: Circle [id:dp35099650150725936] 
+	\draw  [fill={rgb, 255:red, 245; green, 166; blue, 35 }  ,fill opacity=1 ] (247,117) .. controls (247,114.24) and (249.24,112) .. (252,112) .. controls (254.76,112) and (257,114.24) .. (257,117) .. controls (257,119.76) and (254.76,122) .. (252,122) .. controls (249.24,122) and (247,119.76) .. (247,117) -- cycle ;
+	%Shape: Circle [id:dp8506297328127086] 
+	\draw  [fill={rgb, 255:red, 126; green, 211; blue, 33 }  ,fill opacity=1 ] (317,87) .. controls (317,84.24) and (319.24,82) .. (322,82) .. controls (324.76,82) and (327,84.24) .. (327,87) .. controls (327,89.76) and (324.76,92) .. (322,92) .. controls (319.24,92) and (317,89.76) .. (317,87) -- cycle ;
+	%Shape: Circle [id:dp13542033522890118] 
+	\draw  [fill={rgb, 255:red, 80; green, 227; blue, 194 }  ,fill opacity=1 ] (347,57) .. controls (347,54.24) and (349.24,52) .. (352,52) .. controls (354.76,52) and (357,54.24) .. (357,57) .. controls (357,59.76) and (354.76,62) .. (352,62) .. controls (349.24,62) and (347,59.76) .. (347,57) -- cycle ;
+	%Shape: Circle [id:dp8084376874962047] 
+	\draw  [fill={rgb, 255:red, 80; green, 227; blue, 194 }  ,fill opacity=1 ] (347,87) .. controls (347,84.24) and (349.24,82) .. (352,82) .. controls (354.76,82) and (357,84.24) .. (357,87) .. controls (357,89.76) and (354.76,92) .. (352,92) .. controls (349.24,92) and (347,89.76) .. (347,87) -- cycle ;
+	%Shape: Circle [id:dp8847426949513368] 
+	\draw  [fill={rgb, 255:red, 80; green, 227; blue, 194 }  ,fill opacity=1 ] (347,117) .. controls (347,119.76) and (349.24,122) .. (352,122) .. controls (354.76,122) and (357,119.76) .. (357,117) .. controls (357,114.24) and (354.76,112) .. (352,112) .. controls (349.24,112) and (347,114.24) .. (347,117) -- cycle ;
+	%Straight Lines [id:da8914051723296244] 
+	\draw [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ]   (204,263) -- (194,293) ;
+	
+	
+	%Straight Lines [id:da06391754716328579] 
+	\draw [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ]   (204,263) -- (214,293) ;
+	
+	
+	%Shape: Circle [id:dp6227038405017531] 
+	\draw  [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ] (199,263) .. controls (199,260.24) and (201.24,258) .. (204,258) .. controls (206.76,258) and (209,260.24) .. (209,263) .. controls (209,265.76) and (206.76,268) .. (204,268) .. controls (201.24,268) and (199,265.76) .. (199,263) -- cycle ;
+	%Shape: Circle [id:dp2440197101336028] 
+	\draw  [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ] (189,293) .. controls (189,290.24) and (191.24,288) .. (194,288) .. controls (196.76,288) and (199,290.24) .. (199,293) .. controls (199,295.76) and (196.76,298) .. (194,298) .. controls (191.24,298) and (189,295.76) .. (189,293) -- cycle ;
+	%Shape: Circle [id:dp5425151791196283] 
+	\draw  [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ] (209,293) .. controls (209,290.24) and (211.24,288) .. (214,288) .. controls (216.76,288) and (219,290.24) .. (219,293) .. controls (219,295.76) and (216.76,298) .. (214,298) .. controls (211.24,298) and (209,295.76) .. (209,293) -- cycle ;
+	%Straight Lines [id:da6374316944166638] 
+	\draw [fill={rgb, 255:red, 208; green, 2; blue, 27 }  ,fill opacity=1 ]   (204,323) -- (214,353) ;
+	
+	
+	%Straight Lines [id:da9031525900156245] 
+	\draw [fill={rgb, 255:red, 208; green, 2; blue, 27 }  ,fill opacity=1 ]   (214,353) -- (214,383) ;
+	
+	
+	%Shape: Circle [id:dp8762195875541772] 
+	\draw  [fill={rgb, 255:red, 208; green, 2; blue, 27 }  ,fill opacity=1 ] (199,323) .. controls (199,320.24) and (201.24,318) .. (204,318) .. controls (206.76,318) and (209,320.24) .. (209,323) .. controls (209,325.76) and (206.76,328) .. (204,328) .. controls (201.24,328) and (199,325.76) .. (199,323) -- cycle ;
+	%Shape: Circle [id:dp6420981451417986] 
+	\draw  [fill={rgb, 255:red, 208; green, 2; blue, 27 }  ,fill opacity=1 ] (209,353) .. controls (209,350.24) and (211.24,348) .. (214,348) .. controls (216.76,348) and (219,350.24) .. (219,353) .. controls (219,355.76) and (216.76,358) .. (214,358) .. controls (211.24,358) and (209,355.76) .. (209,353) -- cycle ;
+	%Shape: Circle [id:dp04417101264981693] 
+	\draw  [fill={rgb, 255:red, 208; green, 2; blue, 27 }  ,fill opacity=1 ] (209,383) .. controls (209,380.24) and (211.24,378) .. (214,378) .. controls (216.76,378) and (219,380.24) .. (219,383) .. controls (219,385.76) and (216.76,388) .. (214,388) .. controls (211.24,388) and (209,385.76) .. (209,383) -- cycle ;
+	%Straight Lines [id:da8947229522016393] 
+	\draw [fill={rgb, 255:red, 245; green, 166; blue, 35 }  ,fill opacity=1 ]   (274,168) -- (264,198) ;
+	
+	
+	%Straight Lines [id:da0424133020585038] 
+	\draw [fill={rgb, 255:red, 245; green, 166; blue, 35 }  ,fill opacity=1 ]   (284,198) -- (274,168) ;
+	
+	
+	%Straight Lines [id:da9654547092494905] 
+	\draw [fill={rgb, 255:red, 245; green, 166; blue, 35 }  ,fill opacity=1 ]   (264,228) -- (264,198) ;
+	
+	
+	%Shape: Circle [id:dp6230500202870606] 
+	\draw  [fill={rgb, 255:red, 245; green, 166; blue, 35 }  ,fill opacity=1 ] (269,168) .. controls (269,165.24) and (271.24,163) .. (274,163) .. controls (276.76,163) and (279,165.24) .. (279,168) .. controls (279,170.76) and (276.76,173) .. (274,173) .. controls (271.24,173) and (269,170.76) .. (269,168) -- cycle ;
+	%Shape: Circle [id:dp31891253266856934] 
+	\draw  [fill={rgb, 255:red, 245; green, 166; blue, 35 }  ,fill opacity=1 ] (259,198) .. controls (259,195.24) and (261.24,193) .. (264,193) .. controls (266.76,193) and (269,195.24) .. (269,198) .. controls (269,200.76) and (266.76,203) .. (264,203) .. controls (261.24,203) and (259,200.76) .. (259,198) -- cycle ;
+	%Shape: Circle [id:dp9412825400140135] 
+	\draw  [fill={rgb, 255:red, 245; green, 166; blue, 35 }  ,fill opacity=1 ] (279,198) .. controls (279,195.24) and (281.24,193) .. (284,193) .. controls (286.76,193) and (289,195.24) .. (289,198) .. controls (289,200.76) and (286.76,203) .. (284,203) .. controls (281.24,203) and (279,200.76) .. (279,198) -- cycle ;
+	%Shape: Circle [id:dp46976206873960646] 
+	\draw  [fill={rgb, 255:red, 245; green, 166; blue, 35 }  ,fill opacity=1 ] (259,228) .. controls (259,225.24) and (261.24,223) .. (264,223) .. controls (266.76,223) and (269,225.24) .. (269,228) .. controls (269,230.76) and (266.76,233) .. (264,233) .. controls (261.24,233) and (259,230.76) .. (259,228) -- cycle ;
+	%Straight Lines [id:da6623676434444419] 
+	\draw [fill={rgb, 255:red, 126; green, 211; blue, 33 }  ,fill opacity=1 ]   (344,183) -- (354,213) ;
+	
+	
+	%Straight Lines [id:da28408192857995007] 
+	\draw [fill={rgb, 255:red, 126; green, 211; blue, 33 }  ,fill opacity=1 ]   (344,183) -- (334,213) ;
+	
+	
+	%Shape: Circle [id:dp2857451029405893] 
+	\draw  [fill={rgb, 255:red, 126; green, 211; blue, 33 }  ,fill opacity=1 ] (339,183) .. controls (339,180.24) and (341.24,178) .. (344,178) .. controls (346.76,178) and (349,180.24) .. (349,183) .. controls (349,185.76) and (346.76,188) .. (344,188) .. controls (341.24,188) and (339,185.76) .. (339,183) -- cycle ;
+	%Shape: Circle [id:dp6091653827702668] 
+	\draw  [fill={rgb, 255:red, 126; green, 211; blue, 33 }  ,fill opacity=1 ] (329,213) .. controls (329,210.24) and (331.24,208) .. (334,208) .. controls (336.76,208) and (339,210.24) .. (339,213) .. controls (339,215.76) and (336.76,218) .. (334,218) .. controls (331.24,218) and (329,215.76) .. (329,213) -- cycle ;
+	%Shape: Circle [id:dp30375869529891064] 
+	\draw  [fill={rgb, 255:red, 126; green, 211; blue, 33 }  ,fill opacity=1 ] (349,213) .. controls (349,210.24) and (351.24,208) .. (354,208) .. controls (356.76,208) and (359,210.24) .. (359,213) .. controls (359,215.76) and (356.76,218) .. (354,218) .. controls (351.24,218) and (349,215.76) .. (349,213) -- cycle ;
+	%Straight Lines [id:da38480522676082773] 
+	\draw [fill={rgb, 255:red, 80; green, 227; blue, 194 }  ,fill opacity=1 ]   (404,163) -- (404,193) ;
+	
+	
+	%Straight Lines [id:da5946282132438383] 
+	\draw [fill={rgb, 255:red, 80; green, 227; blue, 194 }  ,fill opacity=1 ]   (404,193) -- (404,223) ;
+	
+	
+	%Shape: Circle [id:dp7384567594579634] 
+	\draw  [fill={rgb, 255:red, 80; green, 227; blue, 194 }  ,fill opacity=1 ] (399,163) .. controls (399,160.24) and (401.24,158) .. (404,158) .. controls (406.76,158) and (409,160.24) .. (409,163) .. controls (409,165.76) and (406.76,168) .. (404,168) .. controls (401.24,168) and (399,165.76) .. (399,163) -- cycle ;
+	%Shape: Circle [id:dp8927701421753955] 
+	\draw  [fill={rgb, 255:red, 80; green, 227; blue, 194 }  ,fill opacity=1 ] (399,193) .. controls (399,190.24) and (401.24,188) .. (404,188) .. controls (406.76,188) and (409,190.24) .. (409,193) .. controls (409,195.76) and (406.76,198) .. (404,198) .. controls (401.24,198) and (399,195.76) .. (399,193) -- cycle ;
+	%Shape: Circle [id:dp2417824735790448] 
+	\draw  [fill={rgb, 255:red, 80; green, 227; blue, 194 }  ,fill opacity=1 ] (399,223) .. controls (399,225.76) and (401.24,228) .. (404,228) .. controls (406.76,228) and (409,225.76) .. (409,223) .. controls (409,220.24) and (406.76,218) .. (404,218) .. controls (401.24,218) and (399,220.24) .. (399,223) -- cycle ;
+	%Straight Lines [id:da4186341512458236] 
+	\draw    (169,248) -- (429,248) ;
+	
+	
+	%Straight Lines [id:da017597166466113423] 
+	\draw    (169,308) -- (429,308) ;
+	
+	
+	%Straight Lines [id:da11398403687333847] 
+	\draw    (239,148) -- (239,398) ;
+	
+	
+	%Straight Lines [id:da3457655879782242] 
+	\draw    (309,148) -- (309,398) ;
+	
+	
+	%Straight Lines [id:da4705098669476371] 
+	\draw    (379,148) -- (379,398) ;
+	
+	
+	%Straight Lines [id:da7100613453072049] 
+	\draw    (169,148) -- (169,398) ;
+	
+	
+	%Straight Lines [id:da2766352312952862] 
+	\draw    (169,398) -- (429,398) ;
+	
+	
+	%Straight Lines [id:da8175317383577512] 
+	\draw    (169,148) -- (429,148) ;
+	
+	
+	%Straight Lines [id:da1547628773962435] 
+	\draw    (429,148) -- (429,398) ;
+	
+		% Text Node
+	\draw (91,337) node  [align=left] {S};
+	% Text Node
+	\draw (301,124) node  [align=left] {T};
+	
+	\pause
+	%Shape: Right Angle [id:dp12005735779724946] 
+	\draw  [color={rgb, 255:red, 200; green, 200; blue, 200 }  ,draw opacity=1] [line width=3.75]  (361.8,268.24) -- (339.93,292.36) -- (327.55,281.12) ;
+	%Shape: Right Angle [id:dp8001123913834225] 
+	\draw  [color={rgb, 255:red, 200; green, 200; blue, 200 }  ,draw opacity=1] [line width=3.75]  (290.8,342.24) -- (268.93,366.36) -- (256.55,355.12) ;
+	%Shape: Right Angle [id:dp47715132689964834] 
+	\draw  [color={rgb, 255:red, 200; green, 200; blue, 200 }  ,draw opacity=1 ][line width=3.75]  (291.8,269.24) -- (269.93,293.36) -- (257.55,282.12) ;
+	%Shape: Right Angle [id:dp4705802780391737] 
+	\draw  [color={rgb, 255:red, 200; green, 200; blue, 200 }  ,draw opacity=1 ][line width=3.75]  (420.8,343.24) -- (398.93,367.36) -- (386.55,356.12) ;
+	
+	\pause
+			%Shape: Right Angle [id:dp47715132689964834] 
+	\draw  [line width=3.75]  (291.8,269.24) -- (269.93,293.36) -- (257.55,282.12) ;
+	%Shape: Right Angle [id:dp4705802780391737] 
+	\draw  [line width=3.75]  (420.8,343.24) -- (398.93,367.36) -- (386.55,356.12) ;
+	\end{tikzpicture}
+	
+\end{figure}
+\end{frame}
+
+
+
+\begin{frame}{Subtree Isomorphism, Rooted}
+
+Assume we use Hopcroft-Karp algorithm (or, equivalently, Dinic's maximum flow) to find a maximum matching in $O(E\sqrt{V})$ time. The total time complexity is
+\begin{align*}
+time &= \sum_{u \in S} \sum_{v \in T} time(u, v) \\
+ &= \sum_{u \in S} \sum_{v \in T} \deg(u) \deg(v) \sqrt{\deg(u) + \deg(v)} \\
+ &\leq \sum_{u \in S} \sum_{v \in T} \deg(u) \deg(v) \sqrt{n_s + n_t} \\
+ &\leq n_s n_t \sqrt{n_s + n_t} \\
+ &= O(n_s n_t^{3/2})
+\end{align*}
+\end{frame}
+
+
+\begin{frame}{Subtree Isomorphism, Rooted}{About Maximum Bipartite Matching}
+
+\begin{algorithm}[H] 
+	\caption{Hopcroft-Karp Algorithm, $O(E\sqrt{V})$} 
+	\begin{algorithmic}[1] 
+		\Require a bipartite graph $U \cup V$
+		\Ensure a maximum matching $\mathcal{M}$
+		\State set $\mathcal{M} = \varnothing$
+		\While {there exists augmenting path}
+		\State let $A$ be a \textbf{maximal} set of vertex-disjoint shortest augmenting paths
+		\State set $\mathcal{M} = \mathcal{M} \oplus A $
+		\EndWhile
+		\State \Return $\mathcal{M}$
+	\end{algorithmic} 
+\end{algorithm}
+\end{frame}
+
+\begin{frame}{Subtree Isomorphism, Rooted}{About Maximum Bipartite Matching}
+\begin{lemma}
+	 The length of shortest augmenting path strictly increases after each iteration of Hopcroft-Karp algorithm.
+\end{lemma}
+
+\pause
+
+\begin{itemize}
+	\item Each iteration of Hopcroft-Karp can be done in $O(E)$;
+	\item After the first $\sqrt{V}$ iterations the length of shortest augmenting path is at least $\sqrt{V}$;
+	\item Now the symmetric difference of the current matching and the maximum matching is the disjoint union of several augmenting paths and alternating cycles; Since each augmenting path has length at least $\sqrt{V}$, there are at most $\sqrt{V}$ augmenting paths;
+	\item Conclusion: Hopcroft-Karp terminates after at most $2\sqrt{V}$ iterations.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Subtree Isomorphism, Unrooted}
+What if the trees are unrooted?
+\pause
+
+Just root $T$ arbitrarily and try all possible roots of $S$. The total time complexity is $O(n_s^2 n_t^{3/2})$
+
+\pause
+
+But we can still optimize the algorithm. The basic observation is, there may be common subtrees in different rootings of $S$.
+
+\begin{figure}
+\centering
+\tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+
+\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-.8,xscale=.8]
+%uncomment if require: \path (0,300); %set diagram left start at 0, and has height of 300
+
+%Straight Lines [id:da6531030010020693] 
+\draw [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ]   (116,187) -- (96,217) ;
+
+
+%Straight Lines [id:da6598517985944843] 
+\draw [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ]   (116,187) -- (136,217) ;
+
+
+%Straight Lines [id:da46773367765249696] 
+\draw [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ]   (96,217) -- (86,247) ;
+
+
+%Straight Lines [id:da29131097614728874] 
+\draw [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ]   (96,217) -- (106,247) ;
+
+
+%Straight Lines [id:da36271171362851073] 
+\draw [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ]   (136,217) -- (146,247) ;
+
+
+%Straight Lines [id:da16022196379653497] 
+\draw [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ]   (146,247) -- (146,277) ;
+
+
+%Shape: Circle [id:dp1636310053243113] 
+\draw  [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ] (91,217) .. controls (91,214.24) and (93.24,212) .. (96,212) .. controls (98.76,212) and (101,214.24) .. (101,217) .. controls (101,219.76) and (98.76,222) .. (96,222) .. controls (93.24,222) and (91,219.76) .. (91,217) -- cycle ;
+%Shape: Circle [id:dp10202385251212243] 
+\draw  [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ] (81,247) .. controls (81,244.24) and (83.24,242) .. (86,242) .. controls (88.76,242) and (91,244.24) .. (91,247) .. controls (91,249.76) and (88.76,252) .. (86,252) .. controls (83.24,252) and (81,249.76) .. (81,247) -- cycle ;
+%Shape: Circle [id:dp7776592918256753] 
+\draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (131,217) .. controls (131,214.24) and (133.24,212) .. (136,212) .. controls (138.76,212) and (141,214.24) .. (141,217) .. controls (141,219.76) and (138.76,222) .. (136,222) .. controls (133.24,222) and (131,219.76) .. (131,217) -- cycle ;
+%Shape: Circle [id:dp6873595057917721] 
+\draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ][line width=2.25]  (111,187) .. controls (111,184.24) and (113.24,182) .. (116,182) .. controls (118.76,182) and (121,184.24) .. (121,187) .. controls (121,189.76) and (118.76,192) .. (116,192) .. controls (113.24,192) and (111,189.76) .. (111,187) -- cycle ;
+%Shape: Circle [id:dp22937170525672412] 
+\draw  [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ] (101,247) .. controls (101,244.24) and (103.24,242) .. (106,242) .. controls (108.76,242) and (111,244.24) .. (111,247) .. controls (111,249.76) and (108.76,252) .. (106,252) .. controls (103.24,252) and (101,249.76) .. (101,247) -- cycle ;
+%Shape: Circle [id:dp37975501477379936] 
+\draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (141,247) .. controls (141,244.24) and (143.24,242) .. (146,242) .. controls (148.76,242) and (151,244.24) .. (151,247) .. controls (151,249.76) and (148.76,252) .. (146,252) .. controls (143.24,252) and (141,249.76) .. (141,247) -- cycle ;
+%Shape: Circle [id:dp9297248970503629] 
+\draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (141,277) .. controls (141,274.24) and (143.24,272) .. (146,272) .. controls (148.76,272) and (151,274.24) .. (151,277) .. controls (151,279.76) and (148.76,282) .. (146,282) .. controls (143.24,282) and (141,279.76) .. (141,277) -- cycle ;
+%Straight Lines [id:da5704930574669582] 
+\draw [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ]   (230,214) -- (210,244) ;
+
+
+%Straight Lines [id:da9086596623042709] 
+\draw [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ]   (230,214) -- (253,183) ;
+
+
+%Straight Lines [id:da8627374946561166] 
+\draw [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ]   (210,244) -- (200,274) ;
+
+
+%Straight Lines [id:da7859261024057089] 
+\draw [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ]   (210,244) -- (220,274) ;
+
+
+%Straight Lines [id:da5948404733377644] 
+\draw [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ]   (253,183) -- (273,216) ;
+
+
+%Straight Lines [id:da916348544824338] 
+\draw [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ]   (273,216) -- (273,246) ;
+
+
+%Shape: Circle [id:dp14212826950844404] 
+\draw  [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ] (205,244) .. controls (205,241.24) and (207.24,239) .. (210,239) .. controls (212.76,239) and (215,241.24) .. (215,244) .. controls (215,246.76) and (212.76,249) .. (210,249) .. controls (207.24,249) and (205,246.76) .. (205,244) -- cycle ;
+%Shape: Circle [id:dp5947789357530553] 
+\draw  [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ] (195,274) .. controls (195,271.24) and (197.24,269) .. (200,269) .. controls (202.76,269) and (205,271.24) .. (205,274) .. controls (205,276.76) and (202.76,279) .. (200,279) .. controls (197.24,279) and (195,276.76) .. (195,274) -- cycle ;
+%Shape: Circle [id:dp3690082888768411] 
+\draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ][line width=2.25]  (248,183) .. controls (248,180.24) and (250.24,178) .. (253,178) .. controls (255.76,178) and (258,180.24) .. (258,183) .. controls (258,185.76) and (255.76,188) .. (253,188) .. controls (250.24,188) and (248,185.76) .. (248,183) -- cycle ;
+%Shape: Circle [id:dp7388433791066444] 
+\draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (225,214) .. controls (225,211.24) and (227.24,209) .. (230,209) .. controls (232.76,209) and (235,211.24) .. (235,214) .. controls (235,216.76) and (232.76,219) .. (230,219) .. controls (227.24,219) and (225,216.76) .. (225,214) -- cycle ;
+%Shape: Circle [id:dp8819072258617715] 
+\draw  [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ] (215,274) .. controls (215,271.24) and (217.24,269) .. (220,269) .. controls (222.76,269) and (225,271.24) .. (225,274) .. controls (225,276.76) and (222.76,279) .. (220,279) .. controls (217.24,279) and (215,276.76) .. (215,274) -- cycle ;
+%Shape: Circle [id:dp7270812870732146] 
+\draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (268,216) .. controls (268,213.24) and (270.24,211) .. (273,211) .. controls (275.76,211) and (278,213.24) .. (278,216) .. controls (278,218.76) and (275.76,221) .. (273,221) .. controls (270.24,221) and (268,218.76) .. (268,216) -- cycle ;
+%Shape: Circle [id:dp8662294774044959] 
+\draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (268,246) .. controls (268,243.24) and (270.24,241) .. (273,241) .. controls (275.76,241) and (278,243.24) .. (278,246) .. controls (278,248.76) and (275.76,251) .. (273,251) .. controls (270.24,251) and (268,248.76) .. (268,246) -- cycle ;
+
+\end{tikzpicture}
+	
+\end{figure}
+
+A natural idea is to use hashmap to dedupliate subtrees. However, this helps little in the worst case (consider a star-like graph).
+\end{frame}
+
+
+\begin{frame}{Subtree Isomorphism, Unrooted}
+Note that all subtrees can be found as follows:
+\begin{quote}
+Root $S$ at $u$. The resulting rooted tree $S^u$ itself is a rooted subtree. Also, removing any child subtree of $S^u$ yields a rooted subtree.
+\end{quote}
+\begin{figure}[h]
+	\centering	
+	
+	\tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+	
+	\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+	%uncomment if require: \path (0,300); %set diagram left start at 0, and has height of 300
+	
+	%Straight Lines [id:da08994666119382821] 
+	\draw [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ]   (116,187) -- (96,217) ;
+	
+	
+	%Straight Lines [id:da14998523351804094] 
+	\draw [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ]   (116,187) -- (136,217) ;
+	
+	
+	%Straight Lines [id:da2180022032356883] 
+	\draw [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ]   (96,217) -- (86,247) ;
+	
+	
+	%Straight Lines [id:da030682216604548618] 
+	\draw [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ]   (96,217) -- (106,247) ;
+	
+	
+	%Straight Lines [id:da6355111089741785] 
+	\draw [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ]   (136,217) -- (146,247) ;
+	
+	
+	%Straight Lines [id:da9642920883809096] 
+	\draw [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ]   (146,247) -- (146,277) ;
+	
+	
+	%Shape: Circle [id:dp2663285808034008] 
+	\draw  [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ] (91,217) .. controls (91,214.24) and (93.24,212) .. (96,212) .. controls (98.76,212) and (101,214.24) .. (101,217) .. controls (101,219.76) and (98.76,222) .. (96,222) .. controls (93.24,222) and (91,219.76) .. (91,217) -- cycle ;
+	%Shape: Circle [id:dp31074595333591093] 
+	\draw  [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ] (81,247) .. controls (81,244.24) and (83.24,242) .. (86,242) .. controls (88.76,242) and (91,244.24) .. (91,247) .. controls (91,249.76) and (88.76,252) .. (86,252) .. controls (83.24,252) and (81,249.76) .. (81,247) -- cycle ;
+	%Shape: Circle [id:dp3907827658863763] 
+	\draw  [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ] (131,217) .. controls (131,214.24) and (133.24,212) .. (136,212) .. controls (138.76,212) and (141,214.24) .. (141,217) .. controls (141,219.76) and (138.76,222) .. (136,222) .. controls (133.24,222) and (131,219.76) .. (131,217) -- cycle ;
+	%Shape: Circle [id:dp693701696613344] 
+	\draw  [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ][line width=0.75]  (111,187) .. controls (111,184.24) and (113.24,182) .. (116,182) .. controls (118.76,182) and (121,184.24) .. (121,187) .. controls (121,189.76) and (118.76,192) .. (116,192) .. controls (113.24,192) and (111,189.76) .. (111,187) -- cycle ;
+	%Shape: Circle [id:dp015281657901458523] 
+	\draw  [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ] (101,247) .. controls (101,244.24) and (103.24,242) .. (106,242) .. controls (108.76,242) and (111,244.24) .. (111,247) .. controls (111,249.76) and (108.76,252) .. (106,252) .. controls (103.24,252) and (101,249.76) .. (101,247) -- cycle ;
+	%Shape: Circle [id:dp8703768759411152] 
+	\draw  [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ] (141,247) .. controls (141,244.24) and (143.24,242) .. (146,242) .. controls (148.76,242) and (151,244.24) .. (151,247) .. controls (151,249.76) and (148.76,252) .. (146,252) .. controls (143.24,252) and (141,249.76) .. (141,247) -- cycle ;
+	%Shape: Circle [id:dp324861711855581] 
+	\draw  [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ] (141,277) .. controls (141,274.24) and (143.24,272) .. (146,272) .. controls (148.76,272) and (151,274.24) .. (151,277) .. controls (151,279.76) and (148.76,282) .. (146,282) .. controls (143.24,282) and (141,279.76) .. (141,277) -- cycle ;
+	%Straight Lines [id:da4302241850290629] 
+	\draw [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ]   (227,184) -- (207,214) ;
+	
+	
+	%Straight Lines [id:da03329748081274486] 
+	\draw [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] [dash pattern={on 0.84pt off 2.51pt}]  (227,184) -- (247,214) ;
+	
+	
+	%Straight Lines [id:da46711636390273537] 
+	\draw [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ]   (207,214) -- (197,244) ;
+	
+	
+	%Straight Lines [id:da580439796448128] 
+	\draw [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ]   (207,214) -- (217,244) ;
+	
+	
+	%Straight Lines [id:da312084397722977] 
+	\draw [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ]   (247,214) -- (257,244) ;
+	
+	
+	%Straight Lines [id:da8653858932574618] 
+	\draw [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ]   (257,244) -- (257,274) ;
+	
+	
+	%Shape: Circle [id:dp9595193154207962] 
+	\draw  [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ] (202,214) .. controls (202,211.24) and (204.24,209) .. (207,209) .. controls (209.76,209) and (212,211.24) .. (212,214) .. controls (212,216.76) and (209.76,219) .. (207,219) .. controls (204.24,219) and (202,216.76) .. (202,214) -- cycle ;
+	%Shape: Circle [id:dp15244615784515458] 
+	\draw  [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ] (192,244) .. controls (192,241.24) and (194.24,239) .. (197,239) .. controls (199.76,239) and (202,241.24) .. (202,244) .. controls (202,246.76) and (199.76,249) .. (197,249) .. controls (194.24,249) and (192,246.76) .. (192,244) -- cycle ;
+	%Shape: Circle [id:dp11222920479278331] 
+	\draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (242,214) .. controls (242,211.24) and (244.24,209) .. (247,209) .. controls (249.76,209) and (252,211.24) .. (252,214) .. controls (252,216.76) and (249.76,219) .. (247,219) .. controls (244.24,219) and (242,216.76) .. (242,214) -- cycle ;
+	%Shape: Circle [id:dp8039789155230443] 
+	\draw  [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ][line width=0.75]  (222,184) .. controls (222,181.24) and (224.24,179) .. (227,179) .. controls (229.76,179) and (232,181.24) .. (232,184) .. controls (232,186.76) and (229.76,189) .. (227,189) .. controls (224.24,189) and (222,186.76) .. (222,184) -- cycle ;
+	%Shape: Circle [id:dp3457538531688007] 
+	\draw  [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ] (212,244) .. controls (212,241.24) and (214.24,239) .. (217,239) .. controls (219.76,239) and (222,241.24) .. (222,244) .. controls (222,246.76) and (219.76,249) .. (217,249) .. controls (214.24,249) and (212,246.76) .. (212,244) -- cycle ;
+	%Shape: Circle [id:dp6308439020875352] 
+	\draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (252,244) .. controls (252,241.24) and (254.24,239) .. (257,239) .. controls (259.76,239) and (262,241.24) .. (262,244) .. controls (262,246.76) and (259.76,249) .. (257,249) .. controls (254.24,249) and (252,246.76) .. (252,244) -- cycle ;
+	%Shape: Circle [id:dp6595566650601585] 
+	\draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (252,274) .. controls (252,271.24) and (254.24,269) .. (257,269) .. controls (259.76,269) and (262,271.24) .. (262,274) .. controls (262,276.76) and (259.76,279) .. (257,279) .. controls (254.24,279) and (252,276.76) .. (252,274) -- cycle ;
+	%Straight Lines [id:da7544310469171809] 
+	\draw [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] [dash pattern={on 0.84pt off 2.51pt}]  (329,181) -- (309,211) ;
+	
+	
+	%Straight Lines [id:da3606056678135001] 
+	\draw [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ]   (329,181) -- (349,211) ;
+	
+	
+	%Straight Lines [id:da947054557037802] 
+	\draw [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ]   (309,211) -- (299,241) ;
+	
+	
+	%Straight Lines [id:da8065968008595099] 
+	\draw [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ]   (309,211) -- (319,241) ;
+	
+	
+	%Straight Lines [id:da505613772840571] 
+	\draw [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ]   (349,211) -- (359,241) ;
+	
+	
+	%Straight Lines [id:da9891901845866289] 
+	\draw [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ]   (359,241) -- (359,271) ;
+	
+	
+	%Shape: Circle [id:dp013301550970843845] 
+	\draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (304,211) .. controls (304,208.24) and (306.24,206) .. (309,206) .. controls (311.76,206) and (314,208.24) .. (314,211) .. controls (314,213.76) and (311.76,216) .. (309,216) .. controls (306.24,216) and (304,213.76) .. (304,211) -- cycle ;
+	%Shape: Circle [id:dp32134326366913446] 
+	\draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (294,241) .. controls (294,238.24) and (296.24,236) .. (299,236) .. controls (301.76,236) and (304,238.24) .. (304,241) .. controls (304,243.76) and (301.76,246) .. (299,246) .. controls (296.24,246) and (294,243.76) .. (294,241) -- cycle ;
+	%Shape: Circle [id:dp5022476696018607] 
+	\draw  [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ] (344,211) .. controls (344,208.24) and (346.24,206) .. (349,206) .. controls (351.76,206) and (354,208.24) .. (354,211) .. controls (354,213.76) and (351.76,216) .. (349,216) .. controls (346.24,216) and (344,213.76) .. (344,211) -- cycle ;
+	%Shape: Circle [id:dp011675335549725663] 
+	\draw  [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ][line width=0.75]  (324,181) .. controls (324,178.24) and (326.24,176) .. (329,176) .. controls (331.76,176) and (334,178.24) .. (334,181) .. controls (334,183.76) and (331.76,186) .. (329,186) .. controls (326.24,186) and (324,183.76) .. (324,181) -- cycle ;
+	%Shape: Circle [id:dp7251071016338901] 
+	\draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (314,241) .. controls (314,238.24) and (316.24,236) .. (319,236) .. controls (321.76,236) and (324,238.24) .. (324,241) .. controls (324,243.76) and (321.76,246) .. (319,246) .. controls (316.24,246) and (314,243.76) .. (314,241) -- cycle ;
+	%Shape: Circle [id:dp20400006295811068] 
+	\draw  [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ] (354,241) .. controls (354,238.24) and (356.24,236) .. (359,236) .. controls (361.76,236) and (364,238.24) .. (364,241) .. controls (364,243.76) and (361.76,246) .. (359,246) .. controls (356.24,246) and (354,243.76) .. (354,241) -- cycle ;
+	%Shape: Circle [id:dp867699185255397] 
+	\draw  [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ] (354,271) .. controls (354,268.24) and (356.24,266) .. (359,266) .. controls (361.76,266) and (364,268.24) .. (364,271) .. controls (364,273.76) and (361.76,276) .. (359,276) .. controls (356.24,276) and (354,273.76) .. (354,271) -- cycle ;
+	
+	% Text Node
+	\draw (262,203.4) node  [align=left] {u};
+	% Text Node
+	\draw (241,169.4) node  [align=left] {v};
+	
+	
+	\end{tikzpicture}
+\end{figure}
+
+We use $S[u, v]$ to denote the subtree rooted at $v$ after removing child subtree $u$.
+
+\end{frame}
+
+
+\begin{frame}{Subtree Isomorphism, Unrooted}
+We may compute the maximum bipartite matchings for all these trees together. Formally, let $U_i$ denote $U$ removing the $i$-th element $u_i$, we want to compute maximum bipartite matching for $U_i \cup V$ for every $i$. This results in an unrooted subtree isomorphism algorithm in the same time as the rooted case.
+\pause
+
+Note that removing $u_i$ decreases the size of maximum matching by at most 1. In case that $u_i$ is unmatched, or reachable from any unmatched vertex via alternating path, in any maximum bipartite matching of $U \cup V$, the removal of $u_i$ won't decrease the size of maximum matching.
+\pause
+
+\begin{figure}
+	
+	\centering
+	
+	\tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+	
+	\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+	%uncomment if require: \path (0,300); %set diagram left start at 0, and has height of 300
+	
+	%Straight Lines [id:da5632821578650651] 
+	\draw [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ][line width=2.25]    (45,195) -- (25,235) ;
+	
+	
+	%Straight Lines [id:da08573285309176049] 
+	\draw [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ][line width=2.25]    (85,195) -- (65,235) ;
+	
+	
+	%Straight Lines [id:da13348031608498845] 
+	\draw [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ]   (85,195) -- (105,235) ;
+	
+	
+	%Shape: Circle [id:dp4330612443578201] 
+	\draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (100,235) .. controls (100,232.24) and (102.24,230) .. (105,230) .. controls (107.76,230) and (110,232.24) .. (110,235) .. controls (110,237.76) and (107.76,240) .. (105,240) .. controls (102.24,240) and (100,237.76) .. (100,235) -- cycle ;
+	%Shape: Circle [id:dp5107843276218202] 
+	\draw  [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ] (80,195) .. controls (80,192.24) and (82.24,190) .. (85,190) .. controls (87.76,190) and (90,192.24) .. (90,195) .. controls (90,197.76) and (87.76,200) .. (85,200) .. controls (82.24,200) and (80,197.76) .. (80,195) -- cycle ;
+	%Shape: Circle [id:dp6352569465212112] 
+	\draw  [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ] (40,195) .. controls (40,192.24) and (42.24,190) .. (45,190) .. controls (47.76,190) and (50,192.24) .. (50,195) .. controls (50,197.76) and (47.76,200) .. (45,200) .. controls (42.24,200) and (40,197.76) .. (40,195) -- cycle ;
+	%Shape: Circle [id:dp9155209057082523] 
+	\draw  [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ] (20,235) .. controls (20,232.24) and (22.24,230) .. (25,230) .. controls (27.76,230) and (30,232.24) .. (30,235) .. controls (30,237.76) and (27.76,240) .. (25,240) .. controls (22.24,240) and (20,237.76) .. (20,235) -- cycle ;
+	%Shape: Circle [id:dp05114671388042802] 
+	\draw  [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ] (60,235) .. controls (60,232.24) and (62.24,230) .. (65,230) .. controls (67.76,230) and (70,232.24) .. (70,235) .. controls (70,237.76) and (67.76,240) .. (65,240) .. controls (62.24,240) and (60,237.76) .. (60,235) -- cycle ;
+	%Shape: Right Angle [id:dp13727412485899948] 
+	\draw  [line width=3]  (77.15,245.7) -- (64.94,257.15) -- (56.78,248.45) ;
+	%Shape: Right Angle [id:dp3497853856233626] 
+	\draw  [line width=3]  (117.65,246.2) -- (105.44,257.65) -- (97.28,248.95) ;
+	
+	
+	
+	
+	\end{tikzpicture}
+	
+\end{figure}
+
+
+\end{frame}
+
+\begin{frame}{Subtree Isomorphism, Unrooted}
+\begin{algorithm}[H] 
+	\caption{Unooted Subtree Isomorphism} 
+	\begin{algorithmic}[1] 
+		\Require two unrooted trees $S$ and $T$
+		\Ensure decide if $S$ is isomorphic to some g-subtree of $T$
+		\State root $T$ arbitrarily
+		\State initialize $M[\cdot, \cdot]$ with 0
+		\For {vertex $v$ in post-order traversal of $T$}
+		\For {each vertex $u$ is $S$}
+		\State compute the maximum bipartite matchings of $C(S[w, u]) \cup C(v)$ for each $w \in N(u) \cup \{NIL\}$
+		\EndFor
+		\EndFor
+		\State \Return true if $M[S[NIL, u], root(T)] = 1$ for some $u \in S$
+	\end{algorithmic} 
+\end{algorithm}
+\end{frame}
+
+\begin{frame}{Maximum Common Subtrees, Rooted}
+Given two rooted trees $S$, $T$, find a maximum size g-subtree of $S$ isomorphic to some g-subtree of $T$.
+
+\begin{figure}
+\centering
+
+\tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+
+\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+%uncomment if require: \path (0,300); %set diagram left start at 0, and has height of 300
+
+%Straight Lines [id:da769084491763214] 
+\draw    (65,15) -- (35,45) ;
+
+
+%Straight Lines [id:da6456382591160905] 
+\draw    (65,15) -- (65,45) ;
+
+
+%Straight Lines [id:da12609843130409226] 
+\draw    (65,15) -- (95,45) ;
+
+
+%Straight Lines [id:da5767082000394836] 
+\draw    (95,45) -- (95,75) ;
+
+
+%Straight Lines [id:da18963700818608942] 
+\draw    (95,75) -- (75,95) ;
+
+
+%Straight Lines [id:da2457595682639242] 
+\draw    (115,95) -- (95,75) ;
+
+
+%Straight Lines [id:da18590297758822705] 
+\draw    (35,45) -- (55,75) ;
+
+
+%Straight Lines [id:da3599819755411211] 
+\draw    (35,45) -- (35,75) ;
+
+
+%Straight Lines [id:da7625814983108783] 
+\draw    (35,45) -- (15,75) ;
+
+
+%Straight Lines [id:da7131054342380903] 
+\draw    (175,45) -- (145,75) ;
+
+
+%Straight Lines [id:da3205011053918463] 
+\draw    (175,45) -- (175,75) ;
+
+
+%Straight Lines [id:da4380110002298412] 
+\draw    (175,45) -- (205,75) ;
+
+
+%Straight Lines [id:da7111917863040642] 
+\draw    (205,75) -- (205,105) ;
+
+
+%Straight Lines [id:da09452543353553744] 
+\draw    (205,105) -- (185,125) ;
+
+
+%Straight Lines [id:da7682518263137184] 
+\draw    (225,125) -- (205,105) ;
+
+
+%Straight Lines [id:da7451599898662411] 
+\draw    (175,15) -- (175,45) ;
+
+
+%Shape: Circle [id:dp29107478844653945] 
+\draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (170,15) .. controls (170,12.24) and (172.24,10) .. (175,10) .. controls (177.76,10) and (180,12.24) .. (180,15) .. controls (180,17.76) and (177.76,20) .. (175,20) .. controls (172.24,20) and (170,17.76) .. (170,15) -- cycle ;
+%Shape: Circle [id:dp24419089936971905] 
+\draw  [fill={rgb, 255:red, 208; green, 2; blue, 27 }  ,fill opacity=1 ] (170,45) .. controls (170,42.24) and (172.24,40) .. (175,40) .. controls (177.76,40) and (180,42.24) .. (180,45) .. controls (180,47.76) and (177.76,50) .. (175,50) .. controls (172.24,50) and (170,47.76) .. (170,45) -- cycle ;
+%Shape: Circle [id:dp5203718996870654] 
+\draw  [fill={rgb, 255:red, 208; green, 2; blue, 27 }  ,fill opacity=1 ] (140,75) .. controls (140,72.24) and (142.24,70) .. (145,70) .. controls (147.76,70) and (150,72.24) .. (150,75) .. controls (150,77.76) and (147.76,80) .. (145,80) .. controls (142.24,80) and (140,77.76) .. (140,75) -- cycle ;
+%Shape: Circle [id:dp8712207548020636] 
+\draw  [fill={rgb, 255:red, 208; green, 2; blue, 27 }  ,fill opacity=1 ] (170,75) .. controls (170,72.24) and (172.24,70) .. (175,70) .. controls (177.76,70) and (180,72.24) .. (180,75) .. controls (180,77.76) and (177.76,80) .. (175,80) .. controls (172.24,80) and (170,77.76) .. (170,75) -- cycle ;
+%Shape: Circle [id:dp9990435419571881] 
+\draw  [fill={rgb, 255:red, 208; green, 2; blue, 27 }  ,fill opacity=1 ] (200,75) .. controls (200,72.24) and (202.24,70) .. (205,70) .. controls (207.76,70) and (210,72.24) .. (210,75) .. controls (210,77.76) and (207.76,80) .. (205,80) .. controls (202.24,80) and (200,77.76) .. (200,75) -- cycle ;
+%Shape: Circle [id:dp8758133936343289] 
+\draw  [fill={rgb, 255:red, 208; green, 2; blue, 27 }  ,fill opacity=1 ] (200,105) .. controls (200,102.24) and (202.24,100) .. (205,100) .. controls (207.76,100) and (210,102.24) .. (210,105) .. controls (210,107.76) and (207.76,110) .. (205,110) .. controls (202.24,110) and (200,107.76) .. (200,105) -- cycle ;
+%Shape: Circle [id:dp5141821002216107] 
+\draw  [fill={rgb, 255:red, 208; green, 2; blue, 27 }  ,fill opacity=1 ] (180,125) .. controls (180,122.24) and (182.24,120) .. (185,120) .. controls (187.76,120) and (190,122.24) .. (190,125) .. controls (190,127.76) and (187.76,130) .. (185,130) .. controls (182.24,130) and (180,127.76) .. (180,125) -- cycle ;
+%Shape: Circle [id:dp7753413496116859] 
+\draw  [fill={rgb, 255:red, 208; green, 2; blue, 27 }  ,fill opacity=1 ] (220,125) .. controls (220,122.24) and (222.24,120) .. (225,120) .. controls (227.76,120) and (230,122.24) .. (230,125) .. controls (230,127.76) and (227.76,130) .. (225,130) .. controls (222.24,130) and (220,127.76) .. (220,125) -- cycle ;
+%Shape: Circle [id:dp6736850262257232] 
+\draw  [fill={rgb, 255:red, 208; green, 2; blue, 27 }  ,fill opacity=1 ] (60,15) .. controls (60,12.24) and (62.24,10) .. (65,10) .. controls (67.76,10) and (70,12.24) .. (70,15) .. controls (70,17.76) and (67.76,20) .. (65,20) .. controls (62.24,20) and (60,17.76) .. (60,15) -- cycle ;
+%Shape: Circle [id:dp34947702706255224] 
+\draw  [fill={rgb, 255:red, 208; green, 2; blue, 27 }  ,fill opacity=1 ] (60,45) .. controls (60,42.24) and (62.24,40) .. (65,40) .. controls (67.76,40) and (70,42.24) .. (70,45) .. controls (70,47.76) and (67.76,50) .. (65,50) .. controls (62.24,50) and (60,47.76) .. (60,45) -- cycle ;
+%Shape: Circle [id:dp1519845467847245] 
+\draw  [fill={rgb, 255:red, 208; green, 2; blue, 27 }  ,fill opacity=1 ] (90,45) .. controls (90,42.24) and (92.24,40) .. (95,40) .. controls (97.76,40) and (100,42.24) .. (100,45) .. controls (100,47.76) and (97.76,50) .. (95,50) .. controls (92.24,50) and (90,47.76) .. (90,45) -- cycle ;
+%Shape: Circle [id:dp502001029044342] 
+\draw  [fill={rgb, 255:red, 208; green, 2; blue, 27 }  ,fill opacity=1 ] (90,75) .. controls (90,72.24) and (92.24,70) .. (95,70) .. controls (97.76,70) and (100,72.24) .. (100,75) .. controls (100,77.76) and (97.76,80) .. (95,80) .. controls (92.24,80) and (90,77.76) .. (90,75) -- cycle ;
+%Shape: Circle [id:dp08691541522815904] 
+\draw  [fill={rgb, 255:red, 208; green, 2; blue, 27 }  ,fill opacity=1 ] (70,95) .. controls (70,92.24) and (72.24,90) .. (75,90) .. controls (77.76,90) and (80,92.24) .. (80,95) .. controls (80,97.76) and (77.76,100) .. (75,100) .. controls (72.24,100) and (70,97.76) .. (70,95) -- cycle ;
+%Shape: Circle [id:dp40433624426706016] 
+\draw  [fill={rgb, 255:red, 208; green, 2; blue, 27 }  ,fill opacity=1 ] (110,95) .. controls (110,92.24) and (112.24,90) .. (115,90) .. controls (117.76,90) and (120,92.24) .. (120,95) .. controls (120,97.76) and (117.76,100) .. (115,100) .. controls (112.24,100) and (110,97.76) .. (110,95) -- cycle ;
+%Shape: Circle [id:dp2232131644402262] 
+\draw  [fill={rgb, 255:red, 208; green, 2; blue, 27 }  ,fill opacity=1 ] (30,45) .. controls (30,42.24) and (32.24,40) .. (35,40) .. controls (37.76,40) and (40,42.24) .. (40,45) .. controls (40,47.76) and (37.76,50) .. (35,50) .. controls (32.24,50) and (30,47.76) .. (30,45) -- cycle ;
+%Shape: Circle [id:dp24208193890901675] 
+\draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (50,75) .. controls (50,72.24) and (52.24,70) .. (55,70) .. controls (57.76,70) and (60,72.24) .. (60,75) .. controls (60,77.76) and (57.76,80) .. (55,80) .. controls (52.24,80) and (50,77.76) .. (50,75) -- cycle ;
+%Shape: Circle [id:dp45274140415290987] 
+\draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (30,75) .. controls (30,72.24) and (32.24,70) .. (35,70) .. controls (37.76,70) and (40,72.24) .. (40,75) .. controls (40,77.76) and (37.76,80) .. (35,80) .. controls (32.24,80) and (30,77.76) .. (30,75) -- cycle ;
+%Shape: Circle [id:dp5064992277516009] 
+\draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (10,75) .. controls (10,72.24) and (12.24,70) .. (15,70) .. controls (17.76,70) and (20,72.24) .. (20,75) .. controls (20,77.76) and (17.76,80) .. (15,80) .. controls (12.24,80) and (10,77.76) .. (10,75) -- cycle ;
+
+
+
+
+\end{tikzpicture}
+\end{figure}
+
+Consider the rooted case first.
+\end{frame}
+
+\begin{frame}{Maximum Common Subtrees, Rooted}
+\begin{algorithm}[H] 
+	\caption{Rooted Maximum Common Subtrees} 
+	\begin{algorithmic}[1] 
+		\Require two rooted trees $S$ and $T$
+		\Ensure the size of maximum common g-subtrees of $S$ and $T$
+		\For {vertex $v$ in post-order traversal of $T$}
+		\For {each vertex $u$ is $S$}
+		\State build a weighted bipartite graph 
+		$$G = (C(u) \cup C(v), M[C(u), C(v)])$$
+		\State let $M[u, v]$ be the maximum weight matching of $G$, plus 1
+		\EndFor
+		\EndFor
+		\State \Return $\max\limits_{u \in S, v \in T} M[u, v]$
+	\end{algorithmic} 
+\end{algorithm}
+\end{frame}
+
+\begin{frame}{Maximum Common Subtrees, Rooted}
+\begin{solution}[dynamic programming]
+	We may again use dynamic programming to solve this problem. Let for $u \in S, v \in T$, define $M[u, v]$ as the size of maximum common subtrees rooted at $u$ and $v$. The value of $M(u, v)$ can be computed from $M[x, y]$ $(x \in C(u), y \in C(v))$.
+\end{solution}
+
+We may similarly construct a bipartite graph. The value $M[u, v]$ is computed from maximum weight bipartite matching (instead of maximum cardinality bipartite matching).
+
+\end{frame}
+
+\begin{frame}{Maximum Common Subtrees, Rooted}
+\begin{figure}
+	\tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+	
+	\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-0.7,xscale=0.7]
+	%uncomment if require: \path (0,423.9471130371094); %set diagram left start at 0, and has height of 423.9471130371094
+	
+	%Straight Lines [id:da47774558937631384] 
+	\draw [fill={rgb, 255:red, 208; green, 2; blue, 27 }  ,fill opacity=1 ]   (290,55) -- (290,85) ;
+	
+	
+	%Straight Lines [id:da9279646422275463] 
+	\draw [fill={rgb, 255:red, 245; green, 166; blue, 35 }  ,fill opacity=1 ]   (350,55) -- (340,85) ;
+	
+	
+	%Straight Lines [id:da925565243412996] 
+	\draw [fill={rgb, 255:red, 144; green, 19; blue, 254 }  ,fill opacity=1 ]   (105,225) -- (75,255) ;
+	
+	
+	%Straight Lines [id:da07610871417973053] 
+	\draw [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ]   (105,225) -- (105,255) ;
+	
+	
+	%Straight Lines [id:da3564496807706721] 
+	\draw [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ]   (105,225) -- (135,255) ;
+	
+	
+	%Straight Lines [id:da7842954997834544] 
+	\draw [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ]   (135,255) -- (135,285) ;
+	
+	
+	%Straight Lines [id:da41201972728146274] 
+	\draw [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ]   (135,285) -- (115,305) ;
+	
+	
+	%Straight Lines [id:da485076530633034] 
+	\draw [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ]   (155,305) -- (135,285) ;
+	
+	
+	%Straight Lines [id:da33109310343099074] 
+	\draw [fill={rgb, 255:red, 144; green, 19; blue, 254 }  ,fill opacity=1 ]   (75,255) -- (95,285) ;
+	
+	
+	%Straight Lines [id:da3946518068706819] 
+	\draw [fill={rgb, 255:red, 144; green, 19; blue, 254 }  ,fill opacity=1 ]   (75,255) -- (75,285) ;
+	
+	
+	%Straight Lines [id:da5829253965055419] 
+	\draw [fill={rgb, 255:red, 144; green, 19; blue, 254 }  ,fill opacity=1 ]   (75,255) -- (55,285) ;
+	
+	
+	%Straight Lines [id:da6013452307320593] 
+	\draw [fill={rgb, 255:red, 208; green, 2; blue, 27 }  ,fill opacity=1 ]   (320,25) -- (290,55) ;
+	
+	
+	%Straight Lines [id:da7029412683198801] 
+	\draw [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ]   (320,25) -- (320,55) ;
+	
+	
+	%Straight Lines [id:da9514857351727186] 
+	\draw [fill={rgb, 255:red, 245; green, 166; blue, 35 }  ,fill opacity=1 ]   (320,25) -- (350,55) ;
+	
+	
+	%Straight Lines [id:da7002066314016213] 
+	\draw [fill={rgb, 255:red, 245; green, 166; blue, 35 }  ,fill opacity=1 ]   (350,55) -- (365,85) ;
+	
+	
+	%Straight Lines [id:da9150784810019079] 
+	\draw [fill={rgb, 255:red, 245; green, 166; blue, 35 }  ,fill opacity=1 ]   (365,85) -- (365,115) ;
+	
+	
+	%Shape: Circle [id:dp8709843445398795] 
+	\draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (315,25) .. controls (315,22.24) and (317.24,20) .. (320,20) .. controls (322.76,20) and (325,22.24) .. (325,25) .. controls (325,27.76) and (322.76,30) .. (320,30) .. controls (317.24,30) and (315,27.76) .. (315,25) -- cycle ;
+	%Shape: Circle [id:dp4606004375990709] 
+	\draw  [fill={rgb, 255:red, 208; green, 2; blue, 27 }  ,fill opacity=1 ] (285,55) .. controls (285,52.24) and (287.24,50) .. (290,50) .. controls (292.76,50) and (295,52.24) .. (295,55) .. controls (295,57.76) and (292.76,60) .. (290,60) .. controls (287.24,60) and (285,57.76) .. (285,55) -- cycle ;
+	%Shape: Circle [id:dp6803762937130167] 
+	\draw  [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ] (315,55) .. controls (315,52.24) and (317.24,50) .. (320,50) .. controls (322.76,50) and (325,52.24) .. (325,55) .. controls (325,57.76) and (322.76,60) .. (320,60) .. controls (317.24,60) and (315,57.76) .. (315,55) -- cycle ;
+	%Shape: Circle [id:dp8772206582746713] 
+	\draw  [fill={rgb, 255:red, 245; green, 166; blue, 35 }  ,fill opacity=1 ] (345,55) .. controls (345,52.24) and (347.24,50) .. (350,50) .. controls (352.76,50) and (355,52.24) .. (355,55) .. controls (355,57.76) and (352.76,60) .. (350,60) .. controls (347.24,60) and (345,57.76) .. (345,55) -- cycle ;
+	%Shape: Circle [id:dp2271247453033136] 
+	\draw  [fill={rgb, 255:red, 245; green, 166; blue, 35 }  ,fill opacity=1 ] (360,85) .. controls (360,82.24) and (362.24,80) .. (365,80) .. controls (367.76,80) and (370,82.24) .. (370,85) .. controls (370,87.76) and (367.76,90) .. (365,90) .. controls (362.24,90) and (360,87.76) .. (360,85) -- cycle ;
+	%Shape: Circle [id:dp4770159191766057] 
+	\draw  [fill={rgb, 255:red, 245; green, 166; blue, 35 }  ,fill opacity=1 ] (360,115) .. controls (360,112.24) and (362.24,110) .. (365,110) .. controls (367.76,110) and (370,112.24) .. (370,115) .. controls (370,117.76) and (367.76,120) .. (365,120) .. controls (362.24,120) and (360,117.76) .. (360,115) -- cycle ;
+	%Shape: Circle [id:dp5213555559253553] 
+	\draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (100,225) .. controls (100,222.24) and (102.24,220) .. (105,220) .. controls (107.76,220) and (110,222.24) .. (110,225) .. controls (110,227.76) and (107.76,230) .. (105,230) .. controls (102.24,230) and (100,227.76) .. (100,225) -- cycle ;
+	%Shape: Circle [id:dp6746294151772467] 
+	\draw  [fill={rgb, 255:red, 126; green, 211; blue, 33 }  ,fill opacity=1 ] (100,255) .. controls (100,252.24) and (102.24,250) .. (105,250) .. controls (107.76,250) and (110,252.24) .. (110,255) .. controls (110,257.76) and (107.76,260) .. (105,260) .. controls (102.24,260) and (100,257.76) .. (100,255) -- cycle ;
+	%Shape: Circle [id:dp6897713659996207] 
+	\draw  [fill={rgb, 255:red, 80; green, 227; blue, 194 }  ,fill opacity=1 ] (130,255) .. controls (130,252.24) and (132.24,250) .. (135,250) .. controls (137.76,250) and (140,252.24) .. (140,255) .. controls (140,257.76) and (137.76,260) .. (135,260) .. controls (132.24,260) and (130,257.76) .. (130,255) -- cycle ;
+	%Shape: Circle [id:dp7607705438887098] 
+	\draw  [fill={rgb, 255:red, 80; green, 227; blue, 194 }  ,fill opacity=1 ] (130,285) .. controls (130,282.24) and (132.24,280) .. (135,280) .. controls (137.76,280) and (140,282.24) .. (140,285) .. controls (140,287.76) and (137.76,290) .. (135,290) .. controls (132.24,290) and (130,287.76) .. (130,285) -- cycle ;
+	%Shape: Circle [id:dp4287095218511585] 
+	\draw  [fill={rgb, 255:red, 80; green, 227; blue, 194 }  ,fill opacity=1 ] (110,305) .. controls (110,302.24) and (112.24,300) .. (115,300) .. controls (117.76,300) and (120,302.24) .. (120,305) .. controls (120,307.76) and (117.76,310) .. (115,310) .. controls (112.24,310) and (110,307.76) .. (110,305) -- cycle ;
+	%Shape: Circle [id:dp8114402744775537] 
+	\draw  [fill={rgb, 255:red, 80; green, 227; blue, 194 }  ,fill opacity=1 ] (150,305) .. controls (150,302.24) and (152.24,300) .. (155,300) .. controls (157.76,300) and (160,302.24) .. (160,305) .. controls (160,307.76) and (157.76,310) .. (155,310) .. controls (152.24,310) and (150,307.76) .. (150,305) -- cycle ;
+	%Shape: Circle [id:dp7896260508020638] 
+	\draw  [fill={rgb, 255:red, 144; green, 19; blue, 254 }  ,fill opacity=1 ] (70,255) .. controls (70,252.24) and (72.24,250) .. (75,250) .. controls (77.76,250) and (80,252.24) .. (80,255) .. controls (80,257.76) and (77.76,260) .. (75,260) .. controls (72.24,260) and (70,257.76) .. (70,255) -- cycle ;
+	%Shape: Circle [id:dp9241059911661667] 
+	\draw  [fill={rgb, 255:red, 144; green, 19; blue, 254 }  ,fill opacity=1 ] (90,285) .. controls (90,282.24) and (92.24,280) .. (95,280) .. controls (97.76,280) and (100,282.24) .. (100,285) .. controls (100,287.76) and (97.76,290) .. (95,290) .. controls (92.24,290) and (90,287.76) .. (90,285) -- cycle ;
+	%Shape: Circle [id:dp09934380643301277] 
+	\draw  [fill={rgb, 255:red, 144; green, 19; blue, 254 }  ,fill opacity=1 ] (70,285) .. controls (70,282.24) and (72.24,280) .. (75,280) .. controls (77.76,280) and (80,282.24) .. (80,285) .. controls (80,287.76) and (77.76,290) .. (75,290) .. controls (72.24,290) and (70,287.76) .. (70,285) -- cycle ;
+	%Shape: Circle [id:dp9772236420967835] 
+	\draw  [fill={rgb, 255:red, 144; green, 19; blue, 254 }  ,fill opacity=1 ] (50,285) .. controls (50,282.24) and (52.24,280) .. (55,280) .. controls (57.76,280) and (60,282.24) .. (60,285) .. controls (60,287.76) and (57.76,290) .. (55,290) .. controls (52.24,290) and (50,287.76) .. (50,285) -- cycle ;
+	%Shape: Circle [id:dp3668182096434889] 
+	\draw  [fill={rgb, 255:red, 245; green, 166; blue, 35 }  ,fill opacity=1 ] (335,85) .. controls (335,82.24) and (337.24,80) .. (340,80) .. controls (342.76,80) and (345,82.24) .. (345,85) .. controls (345,87.76) and (342.76,90) .. (340,90) .. controls (337.24,90) and (335,87.76) .. (335,85) -- cycle ;
+	%Straight Lines [id:da7142222530100055] 
+	\draw [fill={rgb, 255:red, 208; green, 2; blue, 27 }  ,fill opacity=1 ]   (290,85) -- (290,115) ;
+	
+	
+	%Shape: Circle [id:dp8788504319371784] 
+	\draw  [fill={rgb, 255:red, 208; green, 2; blue, 27 }  ,fill opacity=1 ] (285,85) .. controls (285,82.24) and (287.24,80) .. (290,80) .. controls (292.76,80) and (295,82.24) .. (295,85) .. controls (295,87.76) and (292.76,90) .. (290,90) .. controls (287.24,90) and (285,87.76) .. (285,85) -- cycle ;
+	%Shape: Circle [id:dp7007841794666669] 
+	\draw  [fill={rgb, 255:red, 208; green, 2; blue, 27 }  ,fill opacity=1 ] (285,115) .. controls (285,112.24) and (287.24,110) .. (290,110) .. controls (292.76,110) and (295,112.24) .. (295,115) .. controls (295,117.76) and (292.76,120) .. (290,120) .. controls (287.24,120) and (285,117.76) .. (285,115) -- cycle ;
+	%Straight Lines [id:da1221796547987739] 
+	\draw    (180,230) -- (410,230) ;
+	
+	
+	%Straight Lines [id:da49543054755619464] 
+	\draw    (180,290) -- (410,290) ;
+	
+	
+	%Straight Lines [id:da498721494455181] 
+	\draw    (250,140) -- (250,420) ;
+	
+	
+	%Straight Lines [id:da6257450139536087] 
+	\draw    (300,140) -- (300,420) ;
+	
+	
+	%Straight Lines [id:da0717124705101142] 
+	\draw    (350,140) -- (350,420) ;
+	
+	
+	%Straight Lines [id:da45774659853092015] 
+	\draw    (180,140) -- (180,420) ;
+	
+	
+	%Straight Lines [id:da2936589924362487] 
+	\draw    (180,420) -- (410,420) ;
+	
+	
+	%Straight Lines [id:da9894419625922186] 
+	\draw    (180,140) -- (410,140) ;
+	
+	
+	%Straight Lines [id:da6675607098808662] 
+	\draw    (410,140) -- (410,420) ;
+	
+	
+	%Straight Lines [id:da8472612000957649] 
+	\draw [fill={rgb, 255:red, 208; green, 2; blue, 27 }  ,fill opacity=1 ]   (276,155) -- (276,185) ;
+	
+	
+	%Shape: Circle [id:dp5293321096306698] 
+	\draw  [fill={rgb, 255:red, 208; green, 2; blue, 27 }  ,fill opacity=1 ] (271,155) .. controls (271,152.24) and (273.24,150) .. (276,150) .. controls (278.76,150) and (281,152.24) .. (281,155) .. controls (281,157.76) and (278.76,160) .. (276,160) .. controls (273.24,160) and (271,157.76) .. (271,155) -- cycle ;
+	%Straight Lines [id:da9871890198361901] 
+	\draw [fill={rgb, 255:red, 208; green, 2; blue, 27 }  ,fill opacity=1 ]   (276,185) -- (276,215) ;
+	
+	
+	%Shape: Circle [id:dp10317938091599754] 
+	\draw  [fill={rgb, 255:red, 208; green, 2; blue, 27 }  ,fill opacity=1 ] (271,185) .. controls (271,182.24) and (273.24,180) .. (276,180) .. controls (278.76,180) and (281,182.24) .. (281,185) .. controls (281,187.76) and (278.76,190) .. (276,190) .. controls (273.24,190) and (271,187.76) .. (271,185) -- cycle ;
+	%Shape: Circle [id:dp24498138968004524] 
+	\draw  [fill={rgb, 255:red, 208; green, 2; blue, 27 }  ,fill opacity=1 ] (271,215) .. controls (271,212.24) and (273.24,210) .. (276,210) .. controls (278.76,210) and (281,212.24) .. (281,215) .. controls (281,217.76) and (278.76,220) .. (276,220) .. controls (273.24,220) and (271,217.76) .. (271,215) -- cycle ;
+	%Shape: Circle [id:dp4314950063269867] 
+	\draw  [fill={rgb, 255:red, 248; green, 231; blue, 28 }  ,fill opacity=1 ] (320,185) .. controls (320,182.24) and (322.24,180) .. (325,180) .. controls (327.76,180) and (330,182.24) .. (330,185) .. controls (330,187.76) and (327.76,190) .. (325,190) .. controls (322.24,190) and (320,187.76) .. (320,185) -- cycle ;
+	%Straight Lines [id:da34761261543515554] 
+	\draw [fill={rgb, 255:red, 245; green, 166; blue, 35 }  ,fill opacity=1 ]   (375,155) -- (365,185) ;
+	
+	
+	%Straight Lines [id:da083951758147784] 
+	\draw [fill={rgb, 255:red, 245; green, 166; blue, 35 }  ,fill opacity=1 ]   (375,155) -- (390,185) ;
+	
+	
+	%Straight Lines [id:da6811248760003188] 
+	\draw [fill={rgb, 255:red, 245; green, 166; blue, 35 }  ,fill opacity=1 ]   (390,185) -- (390,215) ;
+	
+	
+	%Shape: Circle [id:dp27459096787815196] 
+	\draw  [fill={rgb, 255:red, 245; green, 166; blue, 35 }  ,fill opacity=1 ] (370,155) .. controls (370,152.24) and (372.24,150) .. (375,150) .. controls (377.76,150) and (380,152.24) .. (380,155) .. controls (380,157.76) and (377.76,160) .. (375,160) .. controls (372.24,160) and (370,157.76) .. (370,155) -- cycle ;
+	%Shape: Circle [id:dp7571619943492933] 
+	\draw  [fill={rgb, 255:red, 245; green, 166; blue, 35 }  ,fill opacity=1 ] (385,185) .. controls (385,182.24) and (387.24,180) .. (390,180) .. controls (392.76,180) and (395,182.24) .. (395,185) .. controls (395,187.76) and (392.76,190) .. (390,190) .. controls (387.24,190) and (385,187.76) .. (385,185) -- cycle ;
+	%Shape: Circle [id:dp12204165413383361] 
+	\draw  [fill={rgb, 255:red, 245; green, 166; blue, 35 }  ,fill opacity=1 ] (385,215) .. controls (385,212.24) and (387.24,210) .. (390,210) .. controls (392.76,210) and (395,212.24) .. (395,215) .. controls (395,217.76) and (392.76,220) .. (390,220) .. controls (387.24,220) and (385,217.76) .. (385,215) -- cycle ;
+	%Shape: Circle [id:dp7864600530562897] 
+	\draw  [fill={rgb, 255:red, 245; green, 166; blue, 35 }  ,fill opacity=1 ] (360,185) .. controls (360,182.24) and (362.24,180) .. (365,180) .. controls (367.76,180) and (370,182.24) .. (370,185) .. controls (370,187.76) and (367.76,190) .. (365,190) .. controls (362.24,190) and (360,187.76) .. (360,185) -- cycle ;
+	%Straight Lines [id:da6027145175246551] 
+	\draw [fill={rgb, 255:red, 144; green, 19; blue, 254 }  ,fill opacity=1 ]   (215,245) -- (235,275) ;
+	
+	
+	%Straight Lines [id:da8239922975351672] 
+	\draw [fill={rgb, 255:red, 144; green, 19; blue, 254 }  ,fill opacity=1 ]   (215,245) -- (215,275) ;
+	
+	
+	%Straight Lines [id:da9242071677629458] 
+	\draw [fill={rgb, 255:red, 144; green, 19; blue, 254 }  ,fill opacity=1 ]   (215,245) -- (195,275) ;
+	
+	
+	%Shape: Circle [id:dp327840617633657] 
+	\draw  [fill={rgb, 255:red, 126; green, 211; blue, 33 }  ,fill opacity=1 ] (210,315) .. controls (210,312.24) and (212.24,310) .. (215,310) .. controls (217.76,310) and (220,312.24) .. (220,315) .. controls (220,317.76) and (217.76,320) .. (215,320) .. controls (212.24,320) and (210,317.76) .. (210,315) -- cycle ;
+	%Shape: Circle [id:dp7954469271203153] 
+	\draw  [fill={rgb, 255:red, 144; green, 19; blue, 254 }  ,fill opacity=1 ] (210,245) .. controls (210,242.24) and (212.24,240) .. (215,240) .. controls (217.76,240) and (220,242.24) .. (220,245) .. controls (220,247.76) and (217.76,250) .. (215,250) .. controls (212.24,250) and (210,247.76) .. (210,245) -- cycle ;
+	%Shape: Circle [id:dp7431829152888298] 
+	\draw  [fill={rgb, 255:red, 144; green, 19; blue, 254 }  ,fill opacity=1 ] (230,275) .. controls (230,272.24) and (232.24,270) .. (235,270) .. controls (237.76,270) and (240,272.24) .. (240,275) .. controls (240,277.76) and (237.76,280) .. (235,280) .. controls (232.24,280) and (230,277.76) .. (230,275) -- cycle ;
+	%Shape: Circle [id:dp6326703820773347] 
+	\draw  [fill={rgb, 255:red, 144; green, 19; blue, 254 }  ,fill opacity=1 ] (210,275) .. controls (210,272.24) and (212.24,270) .. (215,270) .. controls (217.76,270) and (220,272.24) .. (220,275) .. controls (220,277.76) and (217.76,280) .. (215,280) .. controls (212.24,280) and (210,277.76) .. (210,275) -- cycle ;
+	%Shape: Circle [id:dp7589498599938171] 
+	\draw  [fill={rgb, 255:red, 144; green, 19; blue, 254 }  ,fill opacity=1 ] (190,275) .. controls (190,272.24) and (192.24,270) .. (195,270) .. controls (197.76,270) and (200,272.24) .. (200,275) .. controls (200,277.76) and (197.76,280) .. (195,280) .. controls (192.24,280) and (190,277.76) .. (190,275) -- cycle ;
+	%Straight Lines [id:da7474026558820648] 
+	\draw    (180,340) -- (410,340) ;
+	
+	
+	%Straight Lines [id:da9333742266538796] 
+	\draw [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ]   (215,355) -- (215,385) ;
+	
+	
+	%Straight Lines [id:da8706540488812917] 
+	\draw [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ]   (215,385) -- (195,405) ;
+	
+	
+	%Straight Lines [id:da12633801264219402] 
+	\draw [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ]   (235,405) -- (215,385) ;
+	
+	
+	%Shape: Circle [id:dp10001243067575283] 
+	\draw  [fill={rgb, 255:red, 80; green, 227; blue, 194 }  ,fill opacity=1 ] (210,355) .. controls (210,352.24) and (212.24,350) .. (215,350) .. controls (217.76,350) and (220,352.24) .. (220,355) .. controls (220,357.76) and (217.76,360) .. (215,360) .. controls (212.24,360) and (210,357.76) .. (210,355) -- cycle ;
+	%Shape: Circle [id:dp895321468876245] 
+	\draw  [fill={rgb, 255:red, 80; green, 227; blue, 194 }  ,fill opacity=1 ] (210,385) .. controls (210,382.24) and (212.24,380) .. (215,380) .. controls (217.76,380) and (220,382.24) .. (220,385) .. controls (220,387.76) and (217.76,390) .. (215,390) .. controls (212.24,390) and (210,387.76) .. (210,385) -- cycle ;
+	%Shape: Circle [id:dp796058203740625] 
+	\draw  [fill={rgb, 255:red, 80; green, 227; blue, 194 }  ,fill opacity=1 ] (190,405) .. controls (190,402.24) and (192.24,400) .. (195,400) .. controls (197.76,400) and (200,402.24) .. (200,405) .. controls (200,407.76) and (197.76,410) .. (195,410) .. controls (192.24,410) and (190,407.76) .. (190,405) -- cycle ;
+	%Shape: Circle [id:dp4095779983976797] 
+	\draw  [fill={rgb, 255:red, 80; green, 227; blue, 194 }  ,fill opacity=1 ] (230,405) .. controls (230,402.24) and (232.24,400) .. (235,400) .. controls (237.76,400) and (240,402.24) .. (240,405) .. controls (240,407.76) and (237.76,410) .. (235,410) .. controls (232.24,410) and (230,407.76) .. (230,405) -- cycle ;
+
+	
+	% Text Node
+	\draw (92.5,321) node  [align=left] {S};
+	% Text Node
+	\draw (389.5,72) node  [align=left] {T};
+	% Text Node
+	
+	\pause
+	
+	\draw (273.5,259) node  [align=left] {2};
+	% Text Node
+	\draw (323.5,259) node  [align=left] {1};
+	% Text Node
+	\draw (323.5,319) node  [align=left] {1};
+	% Text Node
+	\draw (273.5,319) node  [align=left] {1};
+	% Text Node
+	\draw (376.5,319) node  [align=left] {1};
+	% Text Node
+	\draw (326.5,379) node  [align=left] {1};
+	% Text Node
+	\draw (376.5,259) node  [align=left] {3};
+	% Text Node
+	\draw (376.5,379) node  [align=left] {3};
+	% Text Node
+	\draw (276.5,381) node  [align=left] {3};
+	
+	\pause
+	
+		%Shape: Ellipse [id:dp6620679796483451] 
+	\draw   (261,379.59) .. controls (261,371.08) and (267.72,364.18) .. (276,364.18) .. controls (284.28,364.18) and (291,371.08) .. (291,379.59) .. controls (291,388.1) and (284.28,395) .. (276,395) .. controls (267.72,395) and (261,388.1) .. (261,379.59) -- cycle ;
+	%Shape: Ellipse [id:dp06969975567178355] 
+	\draw   (308,317.59) .. controls (308,309.08) and (314.72,302.18) .. (323,302.18) .. controls (331.28,302.18) and (338,309.08) .. (338,317.59) .. controls (338,326.1) and (331.28,333) .. (323,333) .. controls (314.72,333) and (308,326.1) .. (308,317.59) -- cycle ;
+	%Shape: Ellipse [id:dp8442199203047553] 
+	\draw   (361,258.59) .. controls (361,250.08) and (367.72,243.18) .. (376,243.18) .. controls (384.28,243.18) and (391,250.08) .. (391,258.59) .. controls (391,267.1) and (384.28,274) .. (376,274) .. controls (367.72,274) and (361,267.1) .. (361,258.59) -- cycle ;
+	\end{tikzpicture}
+	
+\end{figure}
+\end{frame}
+
+\begin{frame}{Maximum Common Subtrees, Rooted}
+
+By using a careful implementation of Kuhn-Munkres algorithm, the maximum weight bipartite matching of $U \cup V$ $(|U| < |V|)$ can be solved in $O(|U||V|^2)$ time.
+
+Applying an analysis similar to the subtree isomorphism problem, the total time complexity is $O(n^3)$.
+
+\end{frame}
+
+\begin{frame}{Maximum Common Subtrees, Unrooted}
+
+What about unrooted case?
+
+\pause
+
+It is easy to obtain an $O(n^4)$ algorithm by trying all possible roots of one tree. 
+
+The same technique in subtree isomorphism may apply here to obtain a cubic time algorithm, by not taking maximum weight bipartite matching as black box.
+
+\end{frame}
+
+\begin{frame}{Maximum Common Subtrees, Unrooted}{About Maximum Weight Perfect Bipartite Matching}
+
+The maximum weight perfect matching can be written as a linear program:
+
+\begin{figure}
+\centering
+\begin{minipage}{0.45\linewidth}
+	The primal program:
+\begin{align*}
+\max_{x_{uv}} \quad & \sum_{u,v} w_{uv} x_{uv} \\
+\text{s.t.} \quad & \sum_{u} x_{uv} = 1 \quad \forall v \\
+& \sum_{v} x_{uv} = 1 \quad \forall u \\
+& x_{uv} \geq 0
+\end{align*}
+\end{minipage}
+\pause
+\begin{minipage}{0.45\linewidth}
+	The dual program:
+\begin{align*}
+\min_{y_u, y_v} \quad & \sum_u y_u + \sum_v y_v \\
+\text{s.t.} \quad & y_u + y_v \geq w_{uv} \quad \forall u, v \\
+\end{align*}
+\end{minipage}
+\end{figure}
+
+\end{frame}
+
+\begin{frame}{Maximum Common Subtrees, Unrooted}{About Maximum Weight Perfect Bipartite Matching}
+
+Let $\bar{x}_{uv}$ be optimal solution to primal program, $\bar{y}_u, \bar{y}_v$ be optimal solution to dual program.
+
+\begin{theorem}[Strong duality theorem]
+$$w_{uv} \bar{x}_{uv} = \sum_u \bar{y}_u + \sum_v \bar{y}_v \quad \forall u, v$$
+\end{theorem}
+
+\pause
+
+\begin{theorem}[Complementary slackness theorem]
+$$
+\sum_{uv} \bar{x}_{uv} (\bar{y}_u + \bar{y}_v - w_{uv}) = 0
+$$	
+
+This means only saturated edges can be in maximum matching.
+\end{theorem}
+
+\end{frame}
+
+\begin{frame}{Maximum Common Subtrees, Unrooted}{About Maximum Weight Perfect Bipartite Matching}
+
+\begin{tabular}{c|ccc}
+	$\;$  & 0 & 4 & 3 \\ 
+	\hline
+	0 & 0 & 3 & 0 \\ 
+	0 & 0 & 4 & 2 \\ 
+	0 & 0 & 0 & 3 \\ 
+\end{tabular} $\rightarrow$ \pause
+\begin{tabular}{c|ccc}
+	$\;$  & 0 & 4 & 3 \\ 
+	\hline
+	0 & \textbf{0} & 3 & 0 \\ 
+	0 & \textbf{0} & \textbf{4} & 2 \\ 
+	0 & \textbf{0} & 0 & \textbf{3} \\ 
+\end{tabular}  $\rightarrow$ \pause
+\begin{tabular}{c|ccc}
+	$\;$  & 0 & 4 & 3 \\ 
+	\hline
+	0 & \fbox{\textbf{0}} & 3 & 0 \\ 
+	0 & \textbf{0} & \fbox{\textbf{4}} & 2 \\ 
+	0 & \textbf{0} & 0 & \fbox{\textbf{3}} \\ 
+\end{tabular} 
+
+\pause
+
+After removing a vertex:
+
+\begin{tabular}{c|ccc}
+	$\;$  & 0 & 4 & 3 \\ 
+	\hline
+	0 & 0 & 3 & 0 \\ 
+	0 & 0 & 4 & 2 \\ 
+	0 & 0 & 0 & \underline{0} \\ 
+\end{tabular} $\rightarrow$ \pause
+\begin{tabular}{c|ccc}
+	$\;$  & 0 & 4 & 3 \\ 
+	\hline
+	0 & \textbf{0} & 3 & 0 \\ 
+	0 & \textbf{0} & \textbf{4} & 2 \\ 
+	0 & \textbf{0} & 0 & 0 \\ 
+\end{tabular}  $\rightarrow$ \pause
+\begin{tabular}{c|ccc}
+	$\;$  & 0 & 4 & \underline{2} \\ 
+	\hline
+	0 & \textbf{0} & 3 & 0 \\ 
+	0 & \textbf{0} & \textbf{4} & \textbf{2} \\ 
+	0 & \textbf{0} & 0 & 0 \\ 
+\end{tabular}  $\rightarrow$ \pause
+\begin{tabular}{c|ccc}
+	$\;$  & 0 & \underline{3} & \underline{1} \\ 
+	\hline
+	0 & \textbf{0} & \textbf{3} & 0 \\ 
+	\underline{1} & 0 & \textbf{4} & \textbf{2} \\ 
+	0 & \textbf{0} & 0 & 0 \\ 
+\end{tabular}  $\rightarrow$ \pause
+\begin{tabular}{c|ccc}
+	$\;$  & 0 & 3 & 1 \\ 
+	\hline
+	0 & \textbf{0} & \fbox{\textbf{3}} & 0 \\ 
+	1 & 0 & \textbf{4} & \fbox{\textbf{2}} \\ 
+	0 & \fbox{\textbf{0}} & 0 & 0 \\ 
+\end{tabular}  
+
+\end{frame}
+
+\begin{frame}{Overview}
+
+\begin{itemize}
+\item Three fundamental graph theory problems:
+\begin{table}
+	\centering
+	\begin{tabular}{|c|c|c|}
+		\hline 
+		& Trees & General Graphs \\ 
+		\hline 
+		Graph Isomorphism & $O(n)$ & $O(n^{\text{ploy}\log n})$ \\ 
+		\hline 
+		Subgraph Isomorphism & P & NP-Complete \\ 
+		\hline 
+		Maximum Common Subgraphs & P & NP-Hard \\
+		\hline 
+	\end{tabular} 
+\end{table}
+\item One problem solving framework: turns the original problem into several instances of matching problem.
+\item Two auxiliary algorithms:
+\begin{itemize}
+	\item Edmonds-Karp algorithm: solves maximum cardinality bipartite matching in $O(E\sqrt{V})$ time;
+	\item Kuhn-Munkres algorithm: solves maximum weight bipartite matching in $O(V\;^3)$ time.
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{References}
+\begin{itemize}
+\item Matula, D. W. (1978). Subtree isomorphism in O(n $\hat{}$ 5/2). Annals of Discrete Mathematics, 2, 91-106.
+
+\item Shamir, R. , \& Tsur, D. (1999). Faster subtree isomorphism. Journal of Algorithms, 33(2), 267-280.
+
+(this paper gives a slightly faster subtree isomorphism algorithm, but is of less practical significance)
+
+\item Droschinsky, A. , Kriege, N. M. , \& Mutzel, P. Faster algorithms for the maximum common subtree isomorphism problem. 41st International Symposium on Mathematical Foundations of Computer Science (MFCS'16).
+
+(this paper describes a cubic algorithm for unrooted maximum common subtrees in detail)
+\end{itemize}
+\end{frame}
+
+\end{document}
