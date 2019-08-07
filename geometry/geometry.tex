@@ -39,7 +39,7 @@
 	numbers=left,
 	stringstyle=\monotype,
 	numberstyle=\footnotesize\monotype,
-	firstnumber=last,
+	firstnumber=1,
 	basewidth={0.5em, 0.4em},
 }
 
@@ -68,7 +68,7 @@
 	 \pause
     \begin{itemize}[<+->]
 		\item Vectors have clearer geometric meanings than parameters;
-		\item Vectors have predefined aggregate operations (vector addition/subtraction, scalar multiplication, inner/outer product); when processing parameters we can only use atomic operations (scalar arithmetics).
+		\item Vectors have predefined aggregate operations (vector addition/subtraction, scalar multiplication, inner/outer product); when processing parameters we operate on scalars.
 		\item There is usually no degenerate case in vector-based representations.
 	\end{itemize}
 \end{frame}
@@ -87,7 +87,7 @@ inline T operator * (pt a, pt b) // outer product
 
 \pause
 
-Pros: vector addition/subtraction and scalar multiplication are provided by \lstinline|std::complex|. Also, we may use functions applicable to \lstinline|std::complex|, e.g., \lstinline|std::abs| to get the length of the vector.
+Pros: vector addition/subtraction and scalar multiplication (and their corresponding assignment operators) are provided by \lstinline|std::complex|. Also, we may use functions applicable to \lstinline|std::complex|, e.g., \lstinline|std::abs| to get the length of the vector.
 
 Cons: accessing individual component is a bit tedious. You may use \lstinline|real| and \lstinline|imag| functions.
 \end{frame}
@@ -110,7 +110,7 @@ Cons: accessing individual component is a bit tedious. You may use \lstinline|re
 \end{frame}
 
 \begin{frame}{Triangle Partition}
-The triangular partition method arises from computing the area of a polygon: partition the polygon into several directed triangles, and compute the sum of the signed areas of the triangles.
+The triangle partition method arises from computing the area of a polygon: partition the polygon into several directed triangles, and compute the sum of the signed areas of the triangles.
 \begin{figure}
 	\centering
 	
@@ -164,7 +164,7 @@ The triangular partition method arises from computing the area of a polygon: par
 
 This yields the shoelace formula (aka Gauss's area formula or surveyor's formula):
 $$
-S_P = \frac{1}{2}\left|\sum_{i = 0}^{n - 1} \vec{P_i} \times \vec{P_j}\right|
+S_P = \frac{1}{2}\left|\sum_{i = 0}^{n - 1} \vec{P}_i \times \vec{P}_{i+1}\right|
 \quad (P_n = P_0)
 $$
 \end{frame}
@@ -248,7 +248,7 @@ Exercise:
 \end{frame}
 
 \begin{frame}{Enumerating Local Optima}
-There are many optimization problems in computational geometry. They usually requires to find a geometric object, possibly under some conditions, such that some value is minimized/maximized.
+There are many optimization problems in computational geometry. They usually requires to find a geometric object, possibly under some restrictions, such that some value is minimized/maximized.
 
 In most cases the set of all feasible solutions is infinite. However, for these problems, the set of all local optima is often finite! This enables us to enumerate all local optima and pick the most optimal one.
 \end{frame}
@@ -325,7 +325,7 @@ Given a set of orthogonal rectangles (sides parallel to axes). How to efficientl
 
 \pause
 
-Consider a line scans from left to right. Let $L(x_0)$ denote the total lengths of line $x=x_0$ clipped by the union of the rectangles. The total area is simply $\int_{-\infty}^{\infty} L(x) dx$.
+Imagine a line scans from left to right. Let $L(x_0)$ denote the total length of line $x=x_0$ clipped by the union of the rectangles. The total area is simply $\int_{-\infty}^{\infty} L(x) dx$.
 
 \end{frame}
 
@@ -348,6 +348,221 @@ We need to maintain a set of intervals and the total length of their union. The 
 \centering
 \includegraphics[width=10cm]{sweep.pdf}
 \end{figure}
+\end{frame}
+
+\begin{frame}{Sweep Line Algorithm}{An Introductory Example}
+Extension: given a set of orthogonal rectangles. You need to process several queries. Each query gives a point, and you need to answer the number of rectangles that contains the point.
+
+\pause
+
+Solution: sort the queries along with enter/leave events.
+
+\pause
+
+But, what if we need to process queries online? \pause We need to preserve the data structure after each operation. That's \textbf{persistence}! 
+
+\pause
+
+What if we need dynamically add/delete rectangles? \pause We need to edit the operation sequence as well as preserve the data structure after each operation. That's \textbf{retroactivity}!
+\end{frame}
+
+\begin{frame}{Data Structures}{Persistent Data Structure}
+\textbf{Partial Persistence}
+
+Support accessing all history versions, but only modifying the newest version.
+
+\pause
+
+Method: fat node
+
+\lstinline|vector<pair<timestamp_t, value_t>> x;|
+
+\begin{description}
+	\item[Access] Binary search for timestamp;
+	\item[Modify] \lstinline|x.push_back(timestamp++, new_value)|.
+\end{description}
+
+\pause
+
+\textbf{Full Persistence}
+
+Support accessing and modifying all history versions.
+
+Method: path copying
+\end{frame}
+
+\begin{frame}{Data Structures}{Retroactive Data Structure}
+\textbf{Partial Retroactivity}
+
+Support modifying operation sequence and accessing the newest state of the data structure.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=7cm]{timeline.png}
+\end{figure}
+
+\textbf{Full Retroactivity}
+
+Support modifying operation sequence and accessing the state of the data structure at any time point.
+
+\end{frame}
+
+\begin{frame}{Data Structures}{Decomposable Searching Problem}
+A decomposable searching problem maintains a set $S$, which supports three operations:
+\begin{itemize}
+	\item Insert(S, x): add x to the set S;
+	\item Delete(S, x): delete x from the set S;
+	\item Query(S): query something in the set S;
+\end{itemize}
+and the Query operations can be obtained by combining Query results of disjoint subsets: Query(S + T) = f(Query(S), Query(T)).
+
+\pause 
+
+Using segment tree, we may easily make such data structure retroactive, with $O(\log n)$ overhead.
+
+\end{frame}
+
+\begin{frame}{Data Structures}{Decomposable Searching Problem}
+\begin{figure}
+	\centering
+	
+	
+	\tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+	
+	\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+	%uncomment if require: \path (0,300); %set diagram left start at 0, and has height of 300
+	
+	%Shape: Circle [id:dp40221891020232814] 
+	\draw   (100,180) .. controls (100,174.48) and (104.48,170) .. (110,170) .. controls (115.52,170) and (120,174.48) .. (120,180) .. controls (120,185.52) and (115.52,190) .. (110,190) .. controls (104.48,190) and (100,185.52) .. (100,180) -- cycle ;
+	%Shape: Circle [id:dp33577604295652774] 
+	\draw   (140,180) .. controls (140,174.48) and (144.48,170) .. (150,170) .. controls (155.52,170) and (160,174.48) .. (160,180) .. controls (160,185.52) and (155.52,190) .. (150,190) .. controls (144.48,190) and (140,185.52) .. (140,180) -- cycle ;
+	%Shape: Circle [id:dp5229953207344957] 
+	\draw   (180,180) .. controls (180,174.48) and (184.48,170) .. (190,170) .. controls (195.52,170) and (200,174.48) .. (200,180) .. controls (200,185.52) and (195.52,190) .. (190,190) .. controls (184.48,190) and (180,185.52) .. (180,180) -- cycle ;
+	%Shape: Circle [id:dp25699121649894097] 
+	\draw   (220,180) .. controls (220,174.48) and (224.48,170) .. (230,170) .. controls (235.52,170) and (240,174.48) .. (240,180) .. controls (240,185.52) and (235.52,190) .. (230,190) .. controls (224.48,190) and (220,185.52) .. (220,180) -- cycle ;
+	%Straight Lines [id:da8117362587070329] 
+	\draw    (250,70) -- (170,90) ;
+	
+	
+	%Straight Lines [id:da11286353627510581] 
+	\draw    (170,100) -- (130,130) ;
+	
+	
+	%Straight Lines [id:da3107583348759664] 
+	\draw    (170,100) -- (210,130) ;
+	
+	
+	%Shape: Circle [id:dp6401734620325106] 
+	\draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (160,100) .. controls (160,94.48) and (164.48,90) .. (170,90) .. controls (175.52,90) and (180,94.48) .. (180,100) .. controls (180,105.52) and (175.52,110) .. (170,110) .. controls (164.48,110) and (160,105.52) .. (160,100) -- cycle ;
+	%Straight Lines [id:da5886152916298026] 
+	\draw    (130,140) -- (110,170) ;
+	
+	
+	%Straight Lines [id:da09807922703191618] 
+	\draw    (130,140) -- (150,170) ;
+	
+	
+	%Shape: Circle [id:dp9524248842811434] 
+	\draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (120,140) .. controls (120,134.48) and (124.48,130) .. (130,130) .. controls (135.52,130) and (140,134.48) .. (140,140) .. controls (140,145.52) and (135.52,150) .. (130,150) .. controls (124.48,150) and (120,145.52) .. (120,140) -- cycle ;
+	%Straight Lines [id:da21037945260330004] 
+	\draw    (210,140) -- (190,170) ;
+	
+	
+	%Straight Lines [id:da39006409515695206] 
+	\draw    (210,140) -- (230,170) ;
+	
+	
+	%Shape: Circle [id:dp34065534716780466] 
+	\draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (200,140) .. controls (200,134.48) and (204.48,130) .. (210,130) .. controls (215.52,130) and (220,134.48) .. (220,140) .. controls (220,145.52) and (215.52,150) .. (210,150) .. controls (204.48,150) and (200,145.52) .. (200,140) -- cycle ;
+	%Shape: Circle [id:dp35073228190089956] 
+	\draw   (260,180) .. controls (260,174.48) and (264.48,170) .. (270,170) .. controls (275.52,170) and (280,174.48) .. (280,180) .. controls (280,185.52) and (275.52,190) .. (270,190) .. controls (264.48,190) and (260,185.52) .. (260,180) -- cycle ;
+	%Shape: Circle [id:dp5437661362151764] 
+	\draw   (300,180) .. controls (300,174.48) and (304.48,170) .. (310,170) .. controls (315.52,170) and (320,174.48) .. (320,180) .. controls (320,185.52) and (315.52,190) .. (310,190) .. controls (304.48,190) and (300,185.52) .. (300,180) -- cycle ;
+	%Shape: Circle [id:dp9923938722062762] 
+	\draw   (340,180) .. controls (340,174.48) and (344.48,170) .. (350,170) .. controls (355.52,170) and (360,174.48) .. (360,180) .. controls (360,185.52) and (355.52,190) .. (350,190) .. controls (344.48,190) and (340,185.52) .. (340,180) -- cycle ;
+	%Shape: Circle [id:dp8925746163699286] 
+	\draw   (380,180) .. controls (380,174.48) and (384.48,170) .. (390,170) .. controls (395.52,170) and (400,174.48) .. (400,180) .. controls (400,185.52) and (395.52,190) .. (390,190) .. controls (384.48,190) and (380,185.52) .. (380,180) -- cycle ;
+	%Straight Lines [id:da8190561290246585] 
+	\draw    (330,100) -- (290,130) ;
+	
+	
+	%Straight Lines [id:da48148385368575175] 
+	\draw    (330,100) -- (370,130) ;
+	
+	
+	%Shape: Circle [id:dp0015853245433787855] 
+	\draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (320,100) .. controls (320,94.48) and (324.48,90) .. (330,90) .. controls (335.52,90) and (340,94.48) .. (340,100) .. controls (340,105.52) and (335.52,110) .. (330,110) .. controls (324.48,110) and (320,105.52) .. (320,100) -- cycle ;
+	%Straight Lines [id:da6958977920058216] 
+	\draw    (290,140) -- (270,170) ;
+	
+	
+	%Straight Lines [id:da9855730897095563] 
+	\draw    (290,140) -- (310,170) ;
+	
+	
+	%Shape: Circle [id:dp8907250959572885] 
+	\draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (280,140) .. controls (280,134.48) and (284.48,130) .. (290,130) .. controls (295.52,130) and (300,134.48) .. (300,140) .. controls (300,145.52) and (295.52,150) .. (290,150) .. controls (284.48,150) and (280,145.52) .. (280,140) -- cycle ;
+	%Straight Lines [id:da7364191584309807] 
+	\draw    (370,140) -- (350,170) ;
+	
+	
+	%Straight Lines [id:da5412245774912621] 
+	\draw    (370,140) -- (390,170) ;
+	
+	
+	%Shape: Circle [id:dp05268934157596816] 
+	\draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (360,140) .. controls (360,134.48) and (364.48,130) .. (370,130) .. controls (375.52,130) and (380,134.48) .. (380,140) .. controls (380,145.52) and (375.52,150) .. (370,150) .. controls (364.48,150) and (360,145.52) .. (360,140) -- cycle ;
+	%Straight Lines [id:da6530965464009104] 
+	\draw    (250,70) -- (330,90) ;
+	
+	
+	%Shape: Circle [id:dp5238021079711781] 
+	\draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (240,70) .. controls (240,64.48) and (244.48,60) .. (250,60) .. controls (255.52,60) and (260,64.48) .. (260,70) .. controls (260,75.52) and (255.52,80) .. (250,80) .. controls (244.48,80) and (240,75.52) .. (240,70) -- cycle ;
+	%Straight Lines [id:da5285155640142385] 
+	\draw [color={rgb, 255:red, 74; green, 144; blue, 226 }  ,draw opacity=1 ][line width=1.5]    (179,225) -- (359,225) ;
+	\draw [shift={(359,225)}, rotate = 180] [color={rgb, 255:red, 74; green, 144; blue, 226 }  ,draw opacity=1 ][line width=1.5]    (0,6.71) -- (0,-6.71)   ;
+	\draw [shift={(179,225)}, rotate = 180] [color={rgb, 255:red, 74; green, 144; blue, 226 }  ,draw opacity=1 ][line width=1.5]    (0,6.71) -- (0,-6.71)   ;
+	%Straight Lines [id:da13790800874259257] 
+	\draw [color={rgb, 255:red, 208; green, 2; blue, 27 }  ,draw opacity=1 ][line width=1.5]    (101,247) -- (319.44,247) ;
+	\draw [shift={(319.44,247)}, rotate = 180] [color={rgb, 255:red, 208; green, 2; blue, 27 }  ,draw opacity=1 ][line width=1.5]    (0,6.71) -- (0,-6.71)   ;
+	\draw [shift={(101,247)}, rotate = 180] [color={rgb, 255:red, 208; green, 2; blue, 27 }  ,draw opacity=1 ][line width=1.5]    (0,6.71) -- (0,-6.71)   ;
+	
+	% Text Node
+	\draw (161.5,224) node [color={rgb, 255:red, 74; green, 144; blue, 226 }  ,opacity=1 ] [align=left] {A};
+	% Text Node
+	\draw (229.5,137) node [color={rgb, 255:red, 74; green, 144; blue, 226 }  ,opacity=1 ] [align=left] {A};
+	% Text Node
+	\draw (309.5,137) node [color={rgb, 255:red, 74; green, 144; blue, 226 }  ,opacity=1 ] [align=left] {A};
+	% Text Node
+	\draw (365.5,170) node [color={rgb, 255:red, 74; green, 144; blue, 226 }  ,opacity=1 ] [align=left] {A};
+	% Text Node
+	\draw (110,203) node  [align=left] {1};
+	% Text Node
+	\draw (151,202) node  [align=left] {2};
+	% Text Node
+	\draw (190,202) node  [align=left] {3};
+	% Text Node
+	\draw (231,202) node  [align=left] {4};
+	% Text Node
+	\draw (270,202) node  [align=left] {5};
+	% Text Node
+	\draw (309,202) node  [align=left] {6};
+	% Text Node
+	\draw (350,202) node  [align=left] {7};
+	% Text Node
+	\draw (390,202) node  [align=left] {8};
+	% Text Node
+	\draw (86.5,247) node [color={rgb, 255:red, 208; green, 2; blue, 27 }  ,opacity=1 ] [align=left] {B};
+	% Text Node
+	\draw (150.5,90) node [color={rgb, 255:red, 208; green, 2; blue, 27 }  ,opacity=1 ] [align=left] {B};
+	% Text Node
+	\draw (321.5,137) node [color={rgb, 255:red, 208; green, 2; blue, 27 }  ,opacity=1 ] [align=left] {B};
+	
+	
+	\end{tikzpicture}
+	
+\end{figure}
+
 \end{frame}
 
 \begin{frame}{Sweep Line Algorithm}{ICPC WF'16 G: Oil}
@@ -373,7 +588,6 @@ However, enumerating all such lines and counting the number of intersections for
 
 We may enumerate one end point. Consider a line passing this end point, and we rotate this line. During rotation, several \textit{enter} and \textit{leave} events occur, and we only have to maintain the number of intersections. Just sort all other points by their polar angles to the fixed end points. The total time complexity is thus reduced to $O(n^2 \log n)$.
 \end{frame}
-
 
 \begin{frame}{Sweep Line Algorithm}
 Exercise: 
